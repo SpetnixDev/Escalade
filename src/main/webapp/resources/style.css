@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+}
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+nav {
+	background-color: #333333;
+	padding: 8px;
+}
+
+nav ul {
+	padding: 0;
+	text-align: center;
+}
+
+ul li {
+	display: inline;
+	margin-right: 15px;
+}
+
+li a {
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	padding: 8px 15px;
+	border-radius: 20px;
+	font-weight: bold;
+}
+
+li a:hover {
+	background-color: #666666;
+}
+
+li a:active {
+	background-color: #999999;
+}
+
+.page-title {
+	margin-top: 85px;
+	text-align: center;
+}
+
+.research {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	padding: 8px;
+	gap: 10px;
+}
+
+.research-inputs {
+	display: flex;
+	flex-direction: column;
+	background-color: #e6e6e6;
+	padding: 8px;
+	width: 25%;
+    border-radius: 2px;
+    border: 2px solid #3c91b9;
+}
+
+.research-input {
+	margin: 0.6rem 0 0.6rem 1rem;
+	padding: 0.5rem;
+	border-radius: 2px;
+	background-color: #dddddd;
+	border-bottom: 1px solid #8a8a8a;
+}
+
+.research-title, .results-title {
+	margin: 1rem 0;
+	font-weight: underline;
+	text-align: center;
+}
+
+.research-submit {
+	width: 30%;
+	margin-left: 35%;
+}
+
+.input-text {
+	margin-left: 1rem;
+}
+
+input[type="checkbox"]:checked + .input-text {
+	font-weight: bold;
+}
+
+.results-list {
+	flex-grow: 1;
+	display: flex;
+    flex-direction: column;
+    background-color: #e6e6e6;
+    padding: 8px;
+    border-radius: 2px;
+    border: 2px solid #3c91b9;
+}
+
+.topo {
+	display: flex;
+	flex-direction: row;
+    background-color: #c8c8c8;
+    padding: 8px;
+    margin-bottom: 5px;
+    justify-content: space-between;
+    border-radius: 2px;
+    border-bottom: 1px solid #8a8a8a;
+}
+
+.topo-left {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.available {
+	color: green;
+}
+
+.not-available {
+	color: red;
+}
+
+.owned {
+	color: #787878;
+}
+
+.button {
+	width: 100px;
+	color: gray;
+	background-color: #c8c8c8;
+	border-width: 0px;
+	border-radius: 30px;
+	color: #3c91b9;
+}
+
+.button:hover {
+	background-color: #3c91b9;
+	color: white;
+}
+
+.button:focus {
+	border: 1px solid #3c91b9;
+	outline: none;
+}
+
+.button:active {
+	background-color: #32789a;
+}
