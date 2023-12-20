@@ -25,6 +25,8 @@
 		            <c:forEach items="${ regionsList }" var="region">
 	    				 <div class="research-input"><input type="checkbox" name="region" value="${region}" /><label class="input-text"><c:out value="${ region }" /></label></div>
 					</c:forEach>
+					
+					<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
 		            
 		            <input class="research-submit" type="submit" value="Rechercher">
 		        </form>

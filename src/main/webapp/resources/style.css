@@ -23,7 +23,7 @@ nav ul {
 
 ul li {
 	display: inline;
-	margin-right: 15px;
+	margin-right: 2rem;
 }
 
 li a {
@@ -46,6 +46,7 @@ li a:active {
 .page-title {
 	margin-top: 85px;
 	text-align: center;
+	text-decoration: underline;
 }
 
 .research {
@@ -117,7 +118,7 @@ input[type="checkbox"]:checked + .input-text {
 .topo-left {
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	gap: .3rem;
 }
 
 .available {
@@ -153,4 +154,13 @@ input[type="checkbox"]:checked + .input-text {
 
 .button:active {
 	background-color: #32789a;
+}
+
+.searchbar {
+	width: 90%;
+	margin: 1rem;
+}
+
+.searchbar:focus {
+	outline: none;
 }

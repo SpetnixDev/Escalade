@@ -38,7 +38,7 @@ public class ToposServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setAttribute("regionsList", regionsList);
 		
-		ArrayList<Topo> researchResults = toposService.requestTopos(null);
+		ArrayList<Topo> researchResults = toposService.requestTopos(null, null);
 
 		request.setAttribute("results", researchResults);
 		
@@ -51,8 +51,9 @@ public class ToposServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String[] regions = request.getParameterValues("region");
-		
-		ArrayList<Topo> researchResults = toposService.requestTopos(regions);
+		String[] keywords = request.getParameter("searchbar").strip().split(" ");
+				
+		ArrayList<Topo> researchResults = toposService.requestTopos(regions, keywords);
 				
 		request.setAttribute("regionsList", regionsList);
 		request.setAttribute("results", researchResults);

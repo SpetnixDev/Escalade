@@ -10,9 +10,10 @@ public class Topo {
 	private String owner;
 	private boolean available;
 	
-	public Topo(int id, String title, String region, String owner) {
+	public Topo(int id, String title, String description, String region, String owner) {
 		this.id = id;
 		this.title = title;
+		this.description = description;
 		this.region = region;
 		this.owner = owner;
 		

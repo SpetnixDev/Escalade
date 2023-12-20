@@ -4,14 +4,14 @@ import com.escalade.model.Topo;
 
 public class ToposList {
 	public static Topo[] topos = {
-		new Topo(1, "Topo 1", "Region 1", "Jack"),
-		new Topo(2, "Topo 2", "Region 1", "John"),
-		new Topo(3, "Topo 3", "Region 2", "Jack"),
-		new Topo(4, "Topo 4", "Region 1", "Jack"),
-		new Topo(5, "Topo 5", "Region 2", "Paul"),
-		new Topo(6, "Topo 6", "Region 2", "Jack"),
-		new Topo(7, "Topo 7", "Region 3", "Paul"),
-		new Topo(8, "Topo 8", "Region 4", "John"),
-		new Topo(9, "Topo 9", "Region 5", "John")
+		new Topo(1, "Les Aiguilles de Bavella", "Escalade au cœur de la Corse, entre aiguilles et pins.", "Corse", "Jack"),
+		new Topo(2, "Les Calcaires de Freissinières", "Voies variées dans les Hautes-Alpes.", "Provence-Alpes-Côte d'Azur", "John"),
+		new Topo(3, "Les Gorges de la Jonte", "Site réputé pour l'escalade de fissures en Lozère.", "Occitanie", "Jack"),
+		new Topo(4, "Les Gorges de l'Ardèche", "Escalade avec vue sur la rivière Ardèche.", "Auvergne-Rhône-Alpes", "Jack"),
+		new Topo(5, "Les Gorges de la Restonica", "Escalade en Haute-Corse, entourée de montagnes.", "Corse", "Paul"),
+		new Topo(6, "Le Verdon du Roubion", "Escalade dans les gorges du Roubion, affluant du Verdon.", "Provence-Alpes-Côte d'Azur", "Jack"),
+		new Topo(7, "Le Cirque de Gavarnie", "Escalade dans un site classé au patrimoine mondial.", "Occitanie", "Paul"),
+		new Topo(8, "Les Rochers de Roquebrune", "Escalade sur des rochers rouges près de la mer.", "Provence-Alpes-Côte d'Azur", "John"),
+		new Topo(9, "Les Calanques d'En-Vau", "Escalade au bord de la mer Méditerranée.", "Provence-Alpes-Côte d'Azur", "John")
 	};
 }
