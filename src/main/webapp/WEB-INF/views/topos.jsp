@@ -23,7 +23,7 @@
 	            	<label for="region">Régions :</label>
 	            
 		            <c:forEach items="${ regionsList }" var="region">
-	    				 <div class="research-input"><input type="checkbox" name="region" value="${region}" /><label class="input-text"><c:out value="${ region }" /></label></div>
+	    				<div class="research-input"><input type="checkbox" name="region" value="${region}" /><label class="input-text"><c:out value="${ region }" /></label></div>
 					</c:forEach>
 					
 					<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
@@ -38,7 +38,8 @@
 				<c:forEach var="topo" items="${results}">
 					<div class="topo">
 						<div class="topo-left">
-							<span>${topo.title}</span>
+							<span class="topo-title">${topo.title}</span>
+							<span class="topo-description">${topo.description}</span>
 							
 							<c:choose>
 								<c:when test="${topo.owner != sessionScope.user.username}">

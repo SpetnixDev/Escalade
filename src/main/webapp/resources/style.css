@@ -111,6 +111,7 @@ input[type="checkbox"]:checked + .input-text {
     padding: 8px;
     margin-bottom: 5px;
     justify-content: space-between;
+    align-items: center;
     border-radius: 2px;
     border-bottom: 1px solid #8a8a8a;
 }
@@ -134,9 +135,10 @@ input[type="checkbox"]:checked + .input-text {
 }
 
 .button {
-	width: 100px;
+	width: 8rem;
 	color: gray;
 	background-color: #c8c8c8;
+	height: 3rem;
 	border-width: 0px;
 	border-radius: 30px;
 	color: #3c91b9;
@@ -163,4 +165,12 @@ input[type="checkbox"]:checked + .input-text {
 
 .searchbar:focus {
 	outline: none;
+}
+
+.topo-title {
+	font-weight: bold;
+}
+
+.topo-description {
+	color: #4f4f4f;
 }
