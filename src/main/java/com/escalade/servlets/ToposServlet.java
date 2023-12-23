@@ -19,7 +19,7 @@ import com.escalade.services.TopoService;
 @WebServlet("/topos")
 public class ToposServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TopoService toposService;
+	private TopoService topoService;
 	private List<String> regionsList;
        
     /**
@@ -27,8 +27,8 @@ public class ToposServlet extends HttpServlet {
      */
     public ToposServlet() {
         super();
-        toposService = new TopoService();
-        regionsList = toposService.requestRegions();
+        topoService = new TopoService();
+        regionsList = topoService.requestRegions();
     }
 
 	/**
@@ -38,7 +38,7 @@ public class ToposServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setAttribute("regionsList", regionsList);
 		
-		ArrayList<Topo> researchResults = toposService.requestTopos(null, null);
+		ArrayList<Topo> researchResults = topoService.requestTopos(null, null);
 
 		request.setAttribute("results", researchResults);
 		
@@ -55,7 +55,7 @@ public class ToposServlet extends HttpServlet {
 		String[] regions = request.getParameterValues("region");
 		String[] keywords = request.getParameter("searchbar").strip().split(" ");
 				
-		ArrayList<Topo> researchResults = toposService.requestTopos(regions, keywords);
+		ArrayList<Topo> researchResults = topoService.requestTopos(regions, keywords);
 				
 		request.setAttribute("regionsList", regionsList);
 		request.setAttribute("results", researchResults);

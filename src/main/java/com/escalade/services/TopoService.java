@@ -1,5 +1,7 @@
 package com.escalade.services;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +44,11 @@ public class TopoService {
 			
 			if (keywords != null) {
 				for (String keyword : keywords) {
-					if (!(topo.getTitle().contains(keyword) || topo.getDescription().contains(keyword))) {
+					String normalizedKeyword = normalizeString(keyword);
+					String normalizedTitle = normalizeString(topo.getTitle());
+			        String normalizedDescription = normalizeString(topo.getDescription());
+			        
+					if (!(normalizedTitle.contains(normalizedKeyword) || normalizedDescription.contains(normalizedKeyword))) {
 						hasKeywords = false;
 						
 						break;
@@ -57,6 +63,10 @@ public class TopoService {
 	}
 	
 	public List<String> requestRegions() {
-		return new ArrayList<String>(topos.stream().map(Topo::getRegion).collect(Collectors.toSet()));
+		return new ArrayList<String>(topos.stream().map(Topo::getRegion).distinct().sorted().collect(Collectors.toList()));
+	}
+	
+	private String normalizeString(String string) {
+	    return Normalizer.normalize(string, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
 	}
 }

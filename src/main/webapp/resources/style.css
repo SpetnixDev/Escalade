@@ -2,6 +2,8 @@
 
 body {
 	margin: 0;
+	font-family: "Montserrat", sans-serif;
+	font-size: 16px;
 }
 
 header {
@@ -113,7 +115,7 @@ input[type="checkbox"]:checked + .input-text {
     justify-content: space-between;
     align-items: center;
     border-radius: 2px;
-    border-bottom: 1px solid #8a8a8a;
+    border-bottom: 2px solid #8a8a8a;
 }
 
 .topo-left {
@@ -131,7 +133,7 @@ input[type="checkbox"]:checked + .input-text {
 }
 
 .owned {
-	color: #787878;
+	color: #3c91b9;
 }
 
 .button {

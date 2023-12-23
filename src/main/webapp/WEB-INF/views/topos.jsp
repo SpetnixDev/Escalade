@@ -55,7 +55,7 @@
 								</c:when>
 								
 								<c:otherwise>
-									<span class="owned">Ce topo est à vous</span>
+									<span class="owned">Ce topo vous appartient</span>
 								</c:otherwise>
 							</c:choose>
 						</div>
