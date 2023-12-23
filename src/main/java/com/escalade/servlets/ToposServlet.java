@@ -35,7 +35,6 @@ public class ToposServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setAttribute("regionsList", regionsList);
 		
 		ArrayList<Topo> researchResults = topoService.requestTopos(null, null);
@@ -49,7 +48,6 @@ public class ToposServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		
 		String[] regions = request.getParameterValues("region");

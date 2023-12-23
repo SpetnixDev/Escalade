@@ -12,6 +12,6 @@
 	<body>
 		<%@ include file="../shared/header.jsp" %>
 	
-		<c:out value="${'Welcome to javaTpoint'}"/>
+		<h1 class="page-title">${site.name}</h1>
 	</body>
 </html>

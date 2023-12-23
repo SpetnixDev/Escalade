@@ -33,10 +33,10 @@
 		    </div>
 		    
 			<div class="results-list">
-				<h2 class="results-title"><c:out value="${results.size()}" /> topos trouvé(s)</h2>
+				<h2 class="results-title"><c:out value="${results.size()}" /> topo(s) trouvé(s)</h2>
 			
 				<c:forEach var="topo" items="${results}">
-					<div class="topo">
+					<div class="result-box">
 						<div class="topo-left">
 							<span class="topo-title">${topo.title}</span>
 							<span class="topo-description">${topo.description}</span>

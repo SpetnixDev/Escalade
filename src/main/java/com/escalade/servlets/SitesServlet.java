@@ -1,11 +1,17 @@
 package com.escalade.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.escalade.model.Site;
+import com.escalade.services.SiteService;
 
 /**
  * Servlet implementation class SitesServlet
@@ -13,20 +19,28 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/sites")
 public class SitesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private SiteService siteService;
+	private List<String> regionsList;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SitesServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        siteService = new SiteService();
+        regionsList = siteService.requestRegions();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		request.setAttribute("regionsList", regionsList);
+		
+		ArrayList<Site> researchResults = siteService.requestSites(null, null);
+		
+		request.setAttribute("results", researchResults);
+		
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/sites.jsp").forward(request, response);
 	}
 
@@ -34,16 +48,14 @@ public class SitesServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+
 		String[] regions = request.getParameterValues("region");
-		String sectors = request.getParameter("sectors");
-		String length = request.getParameter("length");
-		String official = request.getParameter("official");
 		
-		request.setAttribute("regions", regions);
-		request.setAttribute("sectors", sectors);
-		request.setAttribute("length", length);
-		request.setAttribute("official", official);
+		ArrayList<Site> researchResults = siteService.requestSites(regions, null);
+		
+		request.setAttribute("regionsList", regionsList);
+		request.setAttribute("results", researchResults);
 		
 		request.getRequestDispatcher("/WEB-INF/views/sites.jsp").forward(request, response);
 	}
