@@ -13,31 +13,35 @@
 	<body>
 		<%@ include file="../shared/header.jsp" %>
 	
-		<h1 class="page-title">Recherche de topos</h1>
+		<h1 class="page-title">Topos</h1>
 	
 		<div class="research">
 	    	<div class="research-inputs">
 	        	<form method="post">
 	        		<h2 class="research-title">Recherche</h2>
 	        	
-	            	<label for="region">Régions :</label>
-	            
-		            <c:forEach items="${ regionsList }" var="region">
-	    				<div class="research-input"><input type="checkbox" name="region" value="${region}" /><label class="input-text"><c:out value="${ region }" /></label></div>
-					</c:forEach>
+	        		<div class="research-box">
+		            	<label class="research-input-title" for="region">Régions</label>
+		            
+			            <c:forEach items="${ regionsList }" var="region">
+		    				<div class="research-input"><input type="checkbox" name="region" value="${region}" /><label class="input-text"><c:out value="${ region }" /></label></div>
+						</c:forEach>
+	        		</div>
 					
-					<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
+					<div class="research-box">
+						<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
+					</div>
 		            
 		            <input class="research-submit" type="submit" value="Rechercher">
 		        </form>
 		    </div>
 		    
 			<div class="results-list">
-				<h2 class="results-title"><c:out value="${results.size()}" /> topo(s) trouvé(s)</h2>
+				<h2 class="results-title"><c:out value="${results.size()}" /> résultat(s)</h2>
 			
 				<c:forEach var="topo" items="${results}">
 					<div class="result-box">
-						<div class="topo-left">
+						<div class="result-left">
 							<span class="topo-title">${topo.title}</span>
 							<span class="topo-description">${topo.description}</span>
 							

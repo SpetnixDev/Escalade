@@ -1,9 +1,11 @@
 @charset "UTF-8";
 
 body {
-	margin: 0;
+	margin: 0 auto;
 	font-family: "Montserrat", sans-serif;
 	font-size: 16px;
+	width: 60%;
+	
 }
 
 header {
@@ -62,23 +64,35 @@ li a:active {
 .research-inputs {
 	display: flex;
 	flex-direction: column;
-	background-color: #e6e6e6;
-	padding: 8px;
-	width: 25%;
+	padding: 4px;
+	width: 30%;
     border-radius: 2px;
-    border: 2px solid #3c91b9;
+}
+
+.research-box {
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 0 0.4rem #aaaaaa;
+	border-radius: 6px;
+	margin: 1rem 0.5rem;
+	padding: 1rem;
 }
 
 .research-input {
-	margin: 0.6rem 0 0.6rem 1rem;
+	margin: 0.2rem 0;
 	padding: 0.5rem;
 	border-radius: 2px;
-	background-color: #dddddd;
-	border-bottom: 1px solid #8a8a8a;
+	border: 1px solid #dddddd;
 }
 
 .research-title, .results-title {
 	margin: 1rem 0;
+	font-weight: underline;
+	text-align: center;
+}
+
+.research-input-title {
+	margin-bottom: 0.7rem;
 	font-weight: underline;
 	text-align: center;
 }
@@ -100,25 +114,23 @@ input[type="checkbox"]:checked + .input-text {
 	flex-grow: 1;
 	display: flex;
     flex-direction: column;
-    background-color: #e6e6e6;
-    padding: 8px;
+    padding: 4px;
     border-radius: 2px;
-    border: 2px solid #3c91b9;
 }
 
 .result-box {
 	display: flex;
 	flex-direction: row;
-    background-color: #c8c8c8;
-    padding: 8px;
-    margin-bottom: 5px;
+	background: white;
+	box-shadow: 0 0 0.4rem #aaaaaa;
+	padding: 8px;
+    margin-bottom: 0.85rem;
     justify-content: space-between;
     align-items: center;
-    border-radius: 2px;
-    border-bottom: 2px solid #8a8a8a;
+    border-radius: 6px;
 }
 
-.topo-left {
+.result-left {
 	display: flex;
 	flex-direction: column;
 	gap: .3rem;
@@ -139,7 +151,7 @@ input[type="checkbox"]:checked + .input-text {
 .button {
 	width: 8rem;
 	color: gray;
-	background-color: #c8c8c8;
+	background-color: #eeeeee;
 	height: 3rem;
 	border-width: 0px;
 	border-radius: 30px;
@@ -161,8 +173,8 @@ input[type="checkbox"]:checked + .input-text {
 }
 
 .searchbar {
-	width: 90%;
-	margin: 1rem;
+	width: 95%;
+	margin: 0.3rem;
 }
 
 .searchbar:focus {
@@ -173,6 +185,23 @@ input[type="checkbox"]:checked + .input-text {
 	font-weight: bold;
 }
 
-.topo-description {
+.topo-description, .site-region {
 	color: #4f4f4f;
+}
+
+.site-name {
+	text-decoration: none;
+	color: #3c91b9;
+}
+
+.site-result {
+	margin: 0;
+}
+
+.official {
+	color: #d93100;
+}
+
+.research-slider {
+	width: 100%;
 }

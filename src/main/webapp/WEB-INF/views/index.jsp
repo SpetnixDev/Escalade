@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Index</title>
+		<title>Les Amis de l'Escalade</title>
 		<link href="${pageContext.request.contextPath}/resources/style.css" rel="stylesheet" type="text/css" />
 	</head>
 	

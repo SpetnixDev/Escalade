@@ -37,7 +37,7 @@ public class SitesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("regionsList", regionsList);
 		
-		ArrayList<Site> researchResults = siteService.requestSites(null, null);
+		ArrayList<Site> researchResults = siteService.requestSites(null, null, false);
 		
 		request.setAttribute("results", researchResults);
 		
@@ -51,8 +51,9 @@ public class SitesServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String[] regions = request.getParameterValues("region");
+		boolean official = request.getParameter("official") != null;
 		
-		ArrayList<Site> researchResults = siteService.requestSites(regions, null);
+		ArrayList<Site> researchResults = siteService.requestSites(regions, null, official);
 		
 		request.setAttribute("regionsList", regionsList);
 		request.setAttribute("results", researchResults);

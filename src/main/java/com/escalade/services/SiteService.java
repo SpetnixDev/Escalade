@@ -20,12 +20,14 @@ public class SiteService {
 		sites = new ArrayList<>(Arrays.asList(SitesList.sites));
 	}
 	
-	public ArrayList<Site> requestSites(String[] regions, String[] keywords) {
+	public ArrayList<Site> requestSites(String[] regions, String[] keywords, boolean official) {
 		ArrayList<Site> results = new ArrayList<>();
 		
-		if (regions == null && keywords == null) return sites;
+		if (regions == null && keywords == null && !official) return sites;
 		
 		for (Site site : sites) {
+			if (official && !site.isOfficial()) continue;
+			
 			boolean hasRegion = true, hasKeywords = true;
 			
 			if (regions != null) {
