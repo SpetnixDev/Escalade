@@ -44,7 +44,7 @@ public class SiteServlet extends HttpServlet {
 		}
 		
 		if (site == null) {
-			response.sendRedirect("/Escalade/home");
+			response.sendRedirect("/Escalade/site-error");
 			
 			return;
 		} else {

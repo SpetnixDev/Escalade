@@ -45,8 +45,8 @@
 	
 					<div class="box research-box">
 						<div class="research-input">
-							<input type="checkbox" name="official" value="true" /><label
-								class="input-text">Site Officiel Amis de l'Escalade</label>
+							<input type="checkbox" name="official" value="true" />
+							<label class="input-text">Site Officiel Amis de l'Escalade</label>
 						</div>
 					</div>
 	

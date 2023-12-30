@@ -4,8 +4,11 @@ body {
 	margin: 0 auto;
 	font-family: "Montserrat", sans-serif;
 	font-size: 16px;
+}
+
+.container {
 	width: 60%;
-	
+	margin: auto;
 }
 
 header {
@@ -117,7 +120,7 @@ input[type="checkbox"]:checked + .input-text {
 }
 
 .box-list-right {
-	flex-grow: 1;
+	width: 70%;
 }
 
 .result-box {
@@ -210,7 +213,7 @@ input[type="checkbox"]:checked + .input-text {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 0.85rem;
+	margin-bottom: 0.2rem;
 	padding: 1rem;
 }
 
@@ -235,4 +238,20 @@ input[type="checkbox"]:checked + .input-text {
 	width: 35%;
 	padding: 0.12rem 0.3rem;
 	font-weight: bold;
+}
+
+.collapsible {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 0.85rem;
+}
+
+.collapsible-content {
+	padding: 0.5rem;
+	display: none;
+	overflow: hidden;
+}
+
+.collapsible-content.active {
+    display: block;
 }
