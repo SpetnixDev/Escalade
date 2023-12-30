@@ -40,4 +40,8 @@ public class Site {
 	public boolean isOfficial() {
 		return official;
 	}
+
+	public void addSector(Sector sector) {
+		sectors.add(sector);
+	}
 }

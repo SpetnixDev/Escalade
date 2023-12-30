@@ -34,8 +34,6 @@ public class SiteService {
 				hasRegion = false;
 				
 				for (String region : regions) {
-					System.out.println(site.getRegion() + " - " + region);
-					
 					if (site.getRegion().equalsIgnoreCase(region)) {
 						hasRegion = true;
 						

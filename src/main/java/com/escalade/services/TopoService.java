@@ -32,8 +32,6 @@ public class TopoService {
 				hasRegion = false;
 				
 				for (String region : regions) {
-					System.out.println(topo.getRegion() + " - " + region);
-					
 					if (topo.getRegion().equalsIgnoreCase(region)) {
 						hasRegion = true;
 						

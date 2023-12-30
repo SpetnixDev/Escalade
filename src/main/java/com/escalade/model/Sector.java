@@ -3,12 +3,20 @@ package com.escalade.model;
 import java.util.List;
 
 public class Sector {
-	String name;
+	private int id;
+	private String name;
 	private List<Route> routes;
+	private int siteId;
 	
-	public Sector(String name, List<Route> routes) {
+	public Sector(int id, String name, List<Route> routes, int siteId) {
+		this.id = id;
 		this.name = name;
 		this.routes = routes;
+		this.siteId = siteId;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public String getName() {
@@ -17,5 +25,9 @@ public class Sector {
 	
 	public List<Route> getRoutes() {
 		return routes;
+	}
+	
+	public int getSiteId() {
+		return siteId;
 	}
 }

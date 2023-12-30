@@ -15,12 +15,12 @@
 	
 		<h1 class="page-title">Topos</h1>
 	
-		<div class="research">
-	    	<div class="research-inputs">
+		<div class="container">
+	    	<div class="box-list box-list-left">
 	        	<form method="post">
 	        		<h2 class="research-title">Recherche</h2>
 	        	
-	        		<div class="research-box">
+	        		<div class="box research-box">
 		            	<label class="research-input-title" for="region">Régions</label>
 		            
 			            <c:forEach items="${ regionsList }" var="region">
@@ -28,7 +28,7 @@
 						</c:forEach>
 	        		</div>
 					
-					<div class="research-box">
+					<div class="box research-box">
 						<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
 					</div>
 		            
@@ -36,11 +36,11 @@
 		        </form>
 		    </div>
 		    
-			<div class="results-list">
+			<div class="box-list box-list-right">
 				<h2 class="results-title"><c:out value="${results.size()}" /> résultat(s)</h2>
 			
 				<c:forEach var="topo" items="${results}">
-					<div class="result-box">
+					<div class="box result-box">
 						<div class="result-left">
 							<span class="topo-title">${topo.title}</span>
 							<span class="topo-description">${topo.description}</span>

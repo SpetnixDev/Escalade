@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,12 +15,12 @@
 	
 		<h1 class="page-title">Sites d'escalade</h1>
 	
-		<div class="research">
-			<div class="research-inputs">
+		<div class="container">
+			<div class="box-list box-list-left">
 				<form method="post">
 					<h2 class="research-title">Recherche</h2>
 	
-					<div class="research-box">
+					<div class="box research-box">
 						<label class="research-input-title" for="region">Régions</label>
 	
 						<c:forEach items="${ regionsList }" var="region">
@@ -31,19 +31,19 @@
 						</c:forEach>
 					</div>
 	
-					<div class="research-box">
+					<div class="box research-box">
 						<label class="research-input-title" for="sectors">Nombre de
 							secteurs</label> <input class="research-slider" type="range"
 							name="sectors" min="0" value="${requestScope.sectors}">
 					</div>
 	
-					<div class="research-box">
+					<div class="box research-box">
 						<label class="research-input-title" for="length">Longueur</label>
 						<input class="research-slider" type="range" name="length" min="0"
 							max="100" value="${requestScope.length}">
 					</div>
 	
-					<div class="research-box">
+					<div class="box research-box">
 						<div class="research-input">
 							<input type="checkbox" name="official" value="true" /><label
 								class="input-text">Site Officiel Amis de l'Escalade</label>
@@ -54,11 +54,11 @@
 				</form>
 			</div>
 	
-			<div class="results-list">
+			<div class="box-list box-list-right">
 				<h2 class="results-title"><c:out value="${results.size()}" /> résultat(s)</h2>
 	
 				<c:forEach var="site" items="${results}">
-					<div class="result-box">
+					<div class="box result-box">
 						<div class="result-left">
 							<p class="site-result">
 								<span class="site-name">${site.name}</span>
