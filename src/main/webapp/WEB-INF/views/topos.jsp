@@ -32,7 +32,7 @@
 						<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
 					</div>
 		            
-		            <input class="research-submit" type="submit" value="Rechercher">
+		            <input class="submit" type="submit" value="Rechercher">
 		        </form>
 		    </div>
 		    
@@ -46,7 +46,7 @@
 							<span class="topo-description">${topo.description}</span>
 							
 							<c:choose>
-								<c:when test="${topo.owner != sessionScope.user.username}">
+								<c:when test="${topo.ownerFirstName != sessionScope.user.firstName}">
 									<c:choose>
 										<c:when test="${topo.available}">
 											<span class="available">Disponible</span>
@@ -64,7 +64,7 @@
 							</c:choose>
 						</div>
 						
-						<c:if test="${topo.owner != sessionScope.user.username && topo.available}">
+						<c:if test="${topo.ownerFirstName != sessionScope.user.firstName && topo.available}">
 							<button class="button" type="button">Réserver</button>
 						</c:if>
 					</div>

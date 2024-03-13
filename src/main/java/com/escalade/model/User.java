@@ -1,22 +1,37 @@
 package com.escalade.model;
 
 public class User {
-	private int id;
-	private String username;
+	private final int id;
+	private String firstName, lastName, email;
+	private final boolean member;
 	private Topo[] topos;
 	
-	public User(int id, String username, Topo[] topos) {
+	public User(int id, String firstName, String lastName, String email, boolean member) {
 		this.id = id;
-		this.username = username;
-		this.topos = topos;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.member = member;
 	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public boolean isMember() {
+		return member;
 	}
 	
 	public Topo[] getTopos() {

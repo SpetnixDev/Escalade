@@ -1,13 +1,12 @@
 package com.escalade.services;
 
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.escalade.model.Site;
+import com.escalade.utils.StringUtils;
 
 public class SiteService {
 	private ArrayList<Site> sites;
@@ -44,8 +43,8 @@ public class SiteService {
 			
 			if (keywords != null) {
 				for (String keyword : keywords) {
-					String normalizedKeyword = normalizeString(keyword);
-					String normalizedTitle = normalizeString(site.getName());
+					String normalizedKeyword = StringUtils.normalizeString(keyword);
+					String normalizedTitle = StringUtils.normalizeString(site.getName());
 			        
 					if (!(normalizedTitle.contains(normalizedKeyword))) {
 						hasKeywords = false;
@@ -64,10 +63,6 @@ public class SiteService {
 	public List<String> requestRegions() {
 		return new ArrayList<String>(sites.stream().map(Site::getRegion).distinct().sorted().collect(Collectors.toList()));
 	}
-	
-	private String normalizeString(String string) {
-	    return Normalizer.normalize(string, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
-	}
 
 	public Site getSiteByID(int siteId) {
 		for (Site site : sites) {
@@ -75,5 +70,13 @@ public class SiteService {
 		}
 		
 		return null;
+	}
+	
+	public int getSmallestSectorsAmount() {
+		return sites.stream().mapToInt(site -> site.getSectors().size()).min().orElse(0);
+	}
+	
+	public int getGreatestSectorsAmount() {
+		return sites.stream().mapToInt(site -> site.getSectors().size()).max().orElse(0);
 	}
 }

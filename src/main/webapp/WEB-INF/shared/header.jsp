@@ -15,7 +15,7 @@
 				</c:when>
 				
 				<c:otherwise>
-					<li><a href="/Escalade/profile">${sessionScope.user.username}</a></li>
+					<li><a href="/Escalade/profile">${sessionScope.user.firstName}</a></li>
 					<li><a href="/Escalade/logout">Déconnexion</a></li>
 				</c:otherwise>
 			</c:choose>

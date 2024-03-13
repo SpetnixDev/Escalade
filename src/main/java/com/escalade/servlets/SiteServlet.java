@@ -24,6 +24,7 @@ public class SiteServlet extends HttpServlet {
      */
     public SiteServlet() {
         super();
+        
         siteService = new SiteService();
     }
 

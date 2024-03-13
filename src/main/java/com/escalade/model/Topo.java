@@ -7,15 +7,15 @@ public class Topo {
 	private String title;
 	private String description;
 	private String region;
-	private String owner;
+	private String ownerFirstName;
 	private boolean available;
 	
-	public Topo(int id, String title, String description, String region, String owner) {
+	public Topo(int id, String title, String description, String region, String ownerFirstName) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.region = region;
-		this.owner = owner;
+		this.ownerFirstName = ownerFirstName;
 		
 		Random random = new Random();
 		
@@ -38,8 +38,8 @@ public class Topo {
 		return region;
 	}
 	
-	public String getOwner() {
-		return owner;
+	public String getOwnerFirstName() {
+		return ownerFirstName;
 	}
 	
 	public boolean isAvailable() {

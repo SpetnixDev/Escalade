@@ -27,17 +27,11 @@
 						
 						<tbody>
 							<tr>
-								<td>
-									<div>Région</div>
-								</td>
-								
+								<td><div>Région</div></td>
 								<td>${site.region}</td>
 							</tr>
 							<tr>
-								<td>
-									<div>Longueur</div>
-								</td>
-								
+								<td><div>Longueur</div></td>
 								<td>6.24 Km</td>
 							</tr>
 						</tbody>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.escalade.model.User;
 import com.escalade.services.UserService;
+import com.escalade.utils.PasswordHashing;
 
 /**
  * Servlet implementation class SigninServlet
@@ -17,6 +18,7 @@ import com.escalade.services.UserService;
 @WebServlet("/signin")
 public class SigninServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 	private UserService userService;
        
     /**
@@ -24,15 +26,13 @@ public class SigninServlet extends HttpServlet {
      */
     public SigninServlet() {
         super();
-        userService = new UserService();
-        // TODO Auto-generated constructor stub
+    	this.userService = new UserService();
     }
-
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
 	}
 
@@ -40,15 +40,12 @@ public class SigninServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		String hashedPassword = PasswordHashing.hashPassword(request.getParameter("password"));
+		User user;
 		
-		boolean authenticationPassed = verifyAuthenticationInformations(username, password);
-		
-		if (authenticationPassed) {
+		if ((user = userService.authenticateUser(email, hashedPassword)) != null) {
 			HttpSession session = request.getSession();
-			
-			User user = userService.createUser(username);
 			session.setAttribute("user", user);
 			
 			response.sendRedirect("/Escalade/home");
@@ -58,13 +55,4 @@ public class SigninServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
 		}
 	}
-
-	private boolean verifyAuthenticationInformations(String username, String password) {
-		if (password.equals("abc123")) {
-			return true;
-		}
-		
-		return false;
-	}
-
 }

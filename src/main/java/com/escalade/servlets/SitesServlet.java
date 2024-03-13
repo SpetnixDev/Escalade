@@ -21,6 +21,7 @@ public class SitesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SiteService siteService;
 	private List<String> regionsList;
+	private int minSectors, maxSectors;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -29,6 +30,8 @@ public class SitesServlet extends HttpServlet {
         super();
         siteService = new SiteService();
         regionsList = siteService.requestRegions();
+        minSectors = siteService.getSmallestSectorsAmount();
+        maxSectors = siteService.getGreatestSectorsAmount();
     }
 
 	/**
@@ -36,6 +39,9 @@ public class SitesServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("regionsList", regionsList);
+		request.setAttribute("minSectors", minSectors);
+		request.setAttribute("maxSectors", maxSectors);
+		request.setAttribute("sectors", minSectors);
 		
 		ArrayList<Site> researchResults = siteService.requestSites(null, null, false);
 		
@@ -49,6 +55,8 @@ public class SitesServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		request.setAttribute("minSectors", minSectors);
+		request.setAttribute("maxSectors", maxSectors);
 
 		String[] regions = request.getParameterValues("region");
 		boolean official = request.getParameter("official") != null;

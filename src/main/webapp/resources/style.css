@@ -106,7 +106,7 @@ li a:active {
 	text-align: center;
 }
 
-.research-submit {
+.submit {
 	width: 30%;
 	margin-left: 35%;
 }
@@ -204,8 +204,15 @@ input[type="checkbox"]:checked + .input-text {
 	color: #d93100;
 }
 
+.slider-box {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .research-slider {
-	width: 100%;
+	width: 90%;
 }
 
 .sector {
@@ -254,4 +261,25 @@ input[type="checkbox"]:checked + .input-text {
 
 .collapsible-content.active {
     display: block;
+}
+
+.login-form {
+	width: 30%;
+}
+
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.input-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }

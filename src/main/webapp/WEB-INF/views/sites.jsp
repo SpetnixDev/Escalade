@@ -23,19 +23,27 @@
 					<div class="box research-box">
 						<label class="research-input-title" for="region">Régions</label>
 	
-						<c:forEach items="${ regionsList }" var="region">
+						<c:forEach items="${regionsList}" var="region">
 							<div class="research-input">
 								<input type="checkbox" name="region" value="${region}" /><label
-									class="input-text"><c:out value="${ region }" /></label>
+									class="input-text"><c:out value="${region}" /></label>
 							</div>
 						</c:forEach>
 					</div>
 	
 					<div class="box research-box">
-						<label class="research-input-title" for="sectors">Nombre de
-							secteurs</label> <input class="research-slider" type="range"
-							name="sectors" min="0" value="${requestScope.sectors}">
+						<label class="research-input-title" for="sectors">Nombre de secteurs</label> 
+						
+						<div class="slider-box">
+							<input class="research-slider" type="range" list="sectorsNumbers" name="sectors" min="${minSectors}" max="${maxSectors}" value="${sectors}" oninput="this.nextElementSibling.value = this.value">
+							<output>${sectors}</output>
+						</div>
 					</div>
+					
+					<datalist id="sectorsNumbers">
+					  <option value="${minSectors}"></option>
+					  <option value="${maxSectors}"></option>
+					</datalist>
 	
 					<div class="box research-box">
 						<label class="research-input-title" for="length">Longueur</label>
@@ -50,7 +58,7 @@
 						</div>
 					</div>
 	
-					<input class="research-submit" type="submit" value="Rechercher">
+					<input class="submit" type="submit" value="Rechercher">
 				</form>
 			</div>
 	
