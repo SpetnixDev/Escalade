@@ -46,7 +46,7 @@
 							<span class="topo-description">${topo.description}</span>
 							
 							<c:choose>
-								<c:when test="${topo.ownerFirstName != sessionScope.user.firstName}">
+								<c:when test="${topo.ownerId != sessionScope.user.id}">
 									<c:choose>
 										<c:when test="${topo.available}">
 											<span class="available">Disponible</span>
@@ -64,7 +64,7 @@
 							</c:choose>
 						</div>
 						
-						<c:if test="${topo.ownerFirstName != sessionScope.user.firstName && topo.available}">
+						<c:if test="${sessionScope.user != null && topo.ownerId != sessionScope.user.id && topo.available}">
 							<button class="button" type="button">Réserver</button>
 						</c:if>
 					</div>

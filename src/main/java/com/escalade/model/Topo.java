@@ -1,25 +1,25 @@
 package com.escalade.model;
 
-import java.util.Random;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Topo {
 	private int id;
 	private String title;
 	private String description;
-	private String region;
-	private String ownerFirstName;
+	private String location;
+	private Date releaseDate;
+	private int ownerId;
 	private boolean available;
 	
-	public Topo(int id, String title, String description, String region, String ownerFirstName) {
+	public Topo(int id, String title, String description, String location, Date releaseDate, int ownerId, boolean available) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.region = region;
-		this.ownerFirstName = ownerFirstName;
-		
-		Random random = new Random();
-		
-		available = random.nextBoolean();
+		this.location = location;
+		this.releaseDate = releaseDate;
+		this.ownerId = ownerId;
+		this.available = available;
 	}
 	
 	public int getId() {
@@ -34,12 +34,19 @@ public class Topo {
 		return description;
 	}
 	
-	public String getRegion() {
-		return region;
+	public String getLocation() {
+		return location;
+	}
+
+	public String getReleaseDate() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		String formattedDate = format.format(releaseDate);
+		
+		return formattedDate;
 	}
 	
-	public String getOwnerFirstName() {
-		return ownerFirstName;
+	public int getOwnerId() {
+		return ownerId;
 	}
 	
 	public boolean isAvailable() {

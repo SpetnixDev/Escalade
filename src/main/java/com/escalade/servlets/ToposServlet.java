@@ -28,16 +28,18 @@ public class ToposServlet extends HttpServlet {
     public ToposServlet() {
         super();
         topoService = new TopoService();
-        regionsList = topoService.requestRegions();
+        regionsList = topoService.requestLocations();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		request.setAttribute("regionsList", regionsList);
 		
-		ArrayList<Topo> researchResults = topoService.requestTopos(null, null);
+		List<Topo> researchResults = topoService.requestTopos();
 
 		request.setAttribute("results", researchResults);
 		
@@ -53,7 +55,7 @@ public class ToposServlet extends HttpServlet {
 		String[] regions = request.getParameterValues("region");
 		String[] keywords = request.getParameter("searchbar").strip().split(" ");
 				
-		ArrayList<Topo> researchResults = topoService.requestTopos(regions, keywords);
+		ArrayList<Topo> researchResults = (ArrayList<Topo>) topoService.requestTopos(regions, keywords);
 				
 		request.setAttribute("regionsList", regionsList);
 		request.setAttribute("results", researchResults);

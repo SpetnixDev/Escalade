@@ -7,7 +7,6 @@
 		<meta charset="UTF-8">
 		<title>${site.name}</title>
 		<link href="${pageContext.request.contextPath}/resources/style.css" rel="stylesheet" type="text/css" />
-		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</head>
 	
 	<body>
@@ -21,7 +20,7 @@
 					<table class="infos-table">
 						<thead>
 							<tr>
-								<th colspan="2" class="site-infos-title">Informations</th>
+								<th colspan="2" class="infos-title">Informations</th>
 							</tr>
 						</thead>
 						
@@ -55,5 +54,7 @@
 				</c:forEach>
 			</div>
 		</div>
+		
+		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</body>
 </html>

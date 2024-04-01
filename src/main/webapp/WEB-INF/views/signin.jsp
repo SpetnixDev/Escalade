@@ -29,5 +29,7 @@
 		        <input class="submit" type="submit" value="Se connecter">
 		    </form>
 	    </div>
+	    	
+	    <a class="link" href="/Escalade/signup">Créer un compte</a>
 	</body>
 </html>

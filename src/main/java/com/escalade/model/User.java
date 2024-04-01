@@ -1,10 +1,12 @@
 package com.escalade.model;
 
+import java.util.List;
+
 public class User {
 	private final int id;
 	private String firstName, lastName, email;
 	private final boolean member;
-	private Topo[] topos;
+	private List<Topo> topos;
 	
 	public User(int id, String firstName, String lastName, String email, boolean member) {
 		this.id = id;
@@ -34,7 +36,11 @@ public class User {
 		return member;
 	}
 	
-	public Topo[] getTopos() {
+	public List<Topo> getTopos() {
 		return topos;
+	}
+	
+	public void setTopos(List<Topo> topos) {
+		this.topos = topos;
 	}
 }

@@ -1,65 +1,304 @@
 package com.escalade.services;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
+import com.escalade.config.DBConnector;
 import com.escalade.model.Topo;
 import com.escalade.utils.StringUtils;
 
 public class TopoService {
-	private ArrayList<Topo> topos;
-	
-	public TopoService() {
-		generateTopos();
-	}
-	
-	private void generateTopos() {
-		topos = new ArrayList<>(Arrays.asList(ToposList.topos));
-	}
-	
 	public ArrayList<Topo> requestTopos(String[] regions, String[] keywords) {
-		ArrayList<Topo> results = new ArrayList<>();
+        Connection connection = DBConnector.getDBConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<Topo> topos = new ArrayList<>();
+
+        try {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM topo WHERE 1 = 1");
+            ArrayList<Object> queryParams = new ArrayList<>();
+
+            if (regions != null && regions.length > 0) {
+                queryBuilder.append(" AND (");
+                
+                for (int i = 0; i < regions.length; i++) {
+                    if (i > 0) {
+                        queryBuilder.append(" OR ");
+                    }
+                    
+                    queryBuilder.append("location LIKE ?");
+                    queryParams.add("%" + regions[i] + "%");
+                    
+                    System.out.println(regions[i]);
+                }
+                
+                queryBuilder.append(")");
+            }
+
+            if (keywords != null && keywords.length > 0) {
+                queryBuilder.append(" AND (");
+                
+                for (int i = 0; i < keywords.length; i++) {
+                    if (i > 0) {
+                        queryBuilder.append(" AND ");
+                    }
+                    
+                    queryBuilder.append("(unaccent(LOWER(title)) LIKE ? OR unaccent(LOWER(description)) LIKE ?)");
+                    queryParams.add("%" + StringUtils.normalizeString(keywords[i]) + "%");
+                    queryParams.add("%" + StringUtils.normalizeString(keywords[i]) + "%");
+                }
+                
+                queryBuilder.append(")");
+            }
+
+            preparedStatement = connection.prepareStatement(queryBuilder.toString());
+
+            for (int i = 0; i < queryParams.size(); i++) {
+                preparedStatement.setObject(i + 1, queryParams.get(i));
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                String location = resultSet.getString("location");
+                Date releaseDate = resultSet.getDate("release_date");
+                boolean available = resultSet.getBoolean("available");
+                
+                topos.add(new Topo(id, title, description, location, releaseDate, userId, available));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return topos;
+    }
+	
+	public List<String> requestLocations() {
+		Connection connection = DBConnector.getDBConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		
-		if (regions == null && keywords == null) return topos;
+		try {
+			String query = "SELECT DISTINCT location FROM topo";
+			preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            
+            ArrayList<String> locations = new ArrayList<>();
+            
+	        while (resultSet.next()) {
+	            String location = resultSet.getString("location");
+	            locations.add(location);
+	        }
+    		
+    		return locations;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 		
-		for (Topo topo : topos) {
-			boolean hasRegion = true, hasKeywords = true;
-			
-			if (regions != null) {
-				hasRegion = false;
-				
-				for (String region : regions) {
-					if (topo.getRegion().equalsIgnoreCase(region)) {
-						hasRegion = true;
-						
-						break;
-					}
-				}
-			}
-			
-			if (keywords != null) {
-				for (String keyword : keywords) {
-					String normalizedKeyword = StringUtils.normalizeString(keyword);
-					String normalizedTitle = StringUtils.normalizeString(topo.getTitle());
-			        String normalizedDescription = StringUtils.normalizeString(topo.getDescription());
-			        
-					if (!(normalizedTitle.contains(normalizedKeyword) || normalizedDescription.contains(normalizedKeyword))) {
-						hasKeywords = false;
-						
-						break;
-					}
-				}
-			}
-			
-			if (hasRegion && hasKeywords) results.add(topo);
-		}
+		return null;
+	}
+
+	public boolean registerNewTopo(int userId, String title, String description, String location, Date releaseDate) {
+		Connection connection = DBConnector.getDBConnection();
+		PreparedStatement preparedStatement = null;
 		
-		return results;
+		try {
+			String query = "INSERT INTO topo (user_id, title, description, location, release_date) VALUES (?, ?, ?, ?, ?)";
+			
+			preparedStatement = connection.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, userId);
+			preparedStatement.setString(2, title);
+			preparedStatement.setString(3, description);
+			preparedStatement.setString(4, location);
+			preparedStatement.setDate(5, releaseDate);
+			
+			int affectedRows = preparedStatement.executeUpdate();
+			
+			if (affectedRows == 0) return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return true;
 	}
 	
-	public List<String> requestRegions() {
-		return new ArrayList<String>(topos.stream().map(Topo::getRegion).distinct().sorted().collect(Collectors.toList()));
+	public List<Topo> requestToposFromUser(int userId) {
+		Connection connection = DBConnector.getDBConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {			
+			String topoQuery = "SELECT * FROM Topo WHERE user_id = ?";
+            preparedStatement = connection.prepareStatement(topoQuery);
+            preparedStatement.setInt(1, userId);
+            resultSet = preparedStatement.executeQuery();
+            
+            ArrayList<Topo> topos = new ArrayList<>();
+            
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                String location = resultSet.getString("location");
+                Date releaseDate = resultSet.getDate("release_date");
+                boolean available = resultSet.getBoolean("available");
+                
+                topos.add(new Topo(id, title, description, location, releaseDate, userId, available));
+            }
+    		
+    		return topos;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return null;
+	}
+	
+	public List<Topo> requestTopos() {
+		Connection connection = DBConnector.getDBConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {			
+			String topoQuery = "SELECT * FROM Topo";
+            preparedStatement = connection.prepareStatement(topoQuery);
+            resultSet = preparedStatement.executeQuery();
+            
+            ArrayList<Topo> topos = new ArrayList<>();
+            
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                String location = resultSet.getString("location");
+                Date releaseDate = resultSet.getDate("release_date");
+                boolean available = resultSet.getBoolean("available");
+                
+                topos.add(new Topo(id, title, description, location, releaseDate, userId, available));
+            }
+    		
+    		return topos;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return null;
+	}
+	
+	public Topo updateTopoAvailability(int topoId, boolean available) {
+		Connection connection = DBConnector.getDBConnection();
+	    PreparedStatement preparedStatement = null;
+	    Topo topo = null;
+	    
+	    try {
+	        String updateQuery = "UPDATE topo SET available = ? WHERE id = ?";
+	        preparedStatement = connection.prepareStatement(updateQuery);
+	        
+	        preparedStatement.setBoolean(1, available);
+	        preparedStatement.setInt(2, topoId);
+	        
+	        int rowsAffected = preparedStatement.executeUpdate();
+	        
+	        if (rowsAffected > 0) {
+	            topo = getTopoFromId(topoId);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+		} finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return topo;
+	}
+
+	public Topo getTopoFromId(int topoId) {
+		Connection connection = DBConnector.getDBConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Topo topo = null;
+
+        try {
+            String query = "SELECT * FROM topo WHERE id = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, topoId);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+            	int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                String location = resultSet.getString("location");
+                Date releaseDate = resultSet.getDate("release_date");
+                boolean available = resultSet.getBoolean("available");
+                
+                topo = new Topo(id, title, description, location, releaseDate, userId, available);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return topo;
 	}
 }

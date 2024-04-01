@@ -41,5 +41,7 @@
 		        <input class="submit" type="submit" value="S'inscrire">
 		    </form>
 		</div>
+	    	
+	    <a class="link" href="/Escalade/signin">Se connecter</a>
 	</body>
 </html>

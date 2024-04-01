@@ -1,14 +1,10 @@
 @charset "UTF-8";
 
 body {
+	background-color: rgb(204, 222, 225);
 	margin: 0 auto;
 	font-family: "Montserrat", sans-serif;
 	font-size: 16px;
-}
-
-.container {
-	width: 60%;
-	margin: auto;
 }
 
 header {
@@ -62,10 +58,13 @@ li a:active {
 	justify-content: space-around;
 	padding: 8px;
 	gap: 10px;
+	width: 60%;
+	margin: auto;
 }
 
 .box {
-	box-shadow: 0 0 0.4rem #aaaaaa;
+	background-color: white;
+	box-shadow: 0 0 0.5rem #888888;
     border-radius: 6px;
 }
 
@@ -152,12 +151,25 @@ input[type="checkbox"]:checked + .input-text {
 
 .button {
 	width: 8rem;
-	color: gray;
 	background-color: #eeeeee;
 	height: 2.5rem;
 	border-width: 0px;
 	border-radius: 30px;
-	color: #3c91b9;
+	/* color: #3c91b9; */
+	color: black;
+}
+
+.green-button {
+	color: green;
+}
+
+.red-button {
+	color: red;
+}
+
+.button-profile {
+	width: 100%;
+	margin-top: 1rem;
 }
 
 .button:hover {
@@ -165,13 +177,25 @@ input[type="checkbox"]:checked + .input-text {
 	color: white;
 }
 
-.button:focus {
-	border: 1px solid #3c91b9;
-	outline: none;
-}
-
 .button:active {
 	background-color: #32789a;
+	color: white;
+}
+
+.green-button:hover {
+	background-color: green;
+}
+
+.green-button:active {
+	background-color: rgb(0, 102, 0);
+}
+
+.red-button:hover {
+	background-color: red;
+}
+
+.red-button:active {
+	background-color: rgb(204, 0, 0);
 }
 
 .searchbar {
@@ -237,7 +261,7 @@ input[type="checkbox"]:checked + .input-text {
 	border-collapse: collapse;
 }
 
-.site-infos-title {
+.infos-title {
 	padding: 0.5rem 0 1rem 0;
 }
 
@@ -282,4 +306,10 @@ input[type="checkbox"]:checked + .input-text {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.link {
+	display: block;
+	text-align: center;
+	font-size: 12px;
 }

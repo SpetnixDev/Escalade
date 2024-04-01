@@ -4,11 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.escalade.config.DBConnector;
+import com.escalade.model.Topo;
 import com.escalade.model.User;
 
 public class UserService {	
+	private TopoService topoService;
+	
+	public UserService() {
+		this.topoService = new TopoService();
+	}
+	
 	public User registerUser(String firstName, String lastName, String email, String password) {
 		Connection connection = DBConnector.getDBConnection();
 		PreparedStatement preparedStatement = null;
@@ -41,7 +49,7 @@ public class UserService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}  finally {
+		} finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
@@ -72,8 +80,11 @@ public class UserService {
             	String firstName = resultSet.getString("first_name");
             	String lastName = resultSet.getString("last_name");
             	boolean member = resultSet.getBoolean("member");
+                
+                List<Topo> topos = topoService.requestToposFromUser(id);
             	
                 user = new User(id, firstName, lastName, email, member);
+                user.setTopos(topos);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,11 +143,11 @@ public class UserService {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                user = new User(resultSet.getInt("id"), resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("email"), resultSet.getBoolean("member"));
+                //user = new User(resultSet.getInt("id"), resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("email"), resultSet.getBoolean("member"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }  finally {
+        } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();

@@ -26,7 +26,11 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(request, response);
+		if (request.getSession(false).getAttribute("user") != null) {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(request, response);
+		} else {
+			response.sendRedirect("/Escalade/signin");
+		}
 	}
 
 	/**

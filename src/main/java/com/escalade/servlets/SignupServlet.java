@@ -55,7 +55,6 @@ public class SignupServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			
 			User user = userService.registerUser(firstName, lastName, email, password);
-			System.out.println(user);
 			session.setAttribute("user", user);
 			
 			response.sendRedirect("/Escalade/home");
