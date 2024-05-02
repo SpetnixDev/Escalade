@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.escalade.model.User;
 import com.escalade.services.UserService;
-import com.escalade.utils.PasswordHashing;
+import com.escalade.util.PasswordHashing;
 
 /**
  * Servlet implementation class SigninServlet

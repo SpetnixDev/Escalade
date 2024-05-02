@@ -10,32 +10,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.escalade.model.Topo;
+import com.escalade.model.Reservation;
 import com.escalade.model.User;
+import com.escalade.services.ReservationService;
 import com.escalade.services.TopoService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Servlet implementation class TestServlet
+ * Servlet implementation class UpdateReservationServlet
  */
-@WebServlet("/updatetopo")
-public class UpdateTopoServlet extends HttpServlet {
+@WebServlet("/updatereservation")
+public class UpdateReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TopoService topoService;
+	private ReservationService reservationService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateTopoServlet() {
+    public UpdateReservationServlet() {
         super();
+
         this.topoService = new TopoService();
+        this.reservationService = new ReservationService();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -52,15 +59,15 @@ public class UpdateTopoServlet extends HttpServlet {
 		if (user == null) {
 			response.sendRedirect("/Escalade/signin");
 		} else {
-		    String topoIdString = (String) requestBody.get("topoId");
-		    int topoId = Integer.parseInt(topoIdString);
+		    String resIdString = (String) requestBody.get("resId");
+		    int resId = Integer.parseInt(resIdString);
 		    
-		    Boolean topoAvailable = (Boolean) requestBody.get("topoAvailable");
+		    String reservationStatus = (String) requestBody.get("reservationStatus");
 		    
-		    Topo topo = null;
+		    Reservation reservation = null;
 		    
-		    if ((topo = topoService.updateTopoAvailability(topoId, !topoAvailable)) != null) {
-			    String jsonResponse = mapper.writeValueAsString(topo);
+		    if ((reservation = reservationService.updateReservation(resId, reservationStatus)) != null) {
+			    String jsonResponse = mapper.writeValueAsString(reservation);
 			    
 			    user.setTopos(topoService.requestToposFromUser(user.getId()));
 			    
@@ -69,4 +76,5 @@ public class UpdateTopoServlet extends HttpServlet {
 		    }
 		}
 	}
+
 }

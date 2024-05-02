@@ -6,7 +6,6 @@
 	<head>
 	    <title>Enregistrer un topo</title>
 	    <link href="${pageContext.request.contextPath}/resources/style.css" rel="stylesheet" type="text/css" />
-		<script src="${pageContext.request.contextPath}/resources/script.js"></script>
 	</head>
 	
 	<body>
@@ -31,7 +30,6 @@
 		    	<div class="form-group">
 			        <label class="input-label" for="location">Région :</label>
 			        <select class="input-field" id="location" name="location">
-        				<option value="">Sélectionnez une région</option>
     				</select>
 		    	</div>
 		
@@ -43,5 +41,7 @@
 		        <input class="submit" type="submit" value="Ajouter un topo">
 		    </form>
 		</div>
+		
+		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</body>
 </html>

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.escalade.model.Site;
 import com.escalade.services.SiteService;
-import com.escalade.utils.HttpUtils;
+import com.escalade.util.HttpUtils;
 
 /**
  * Servlet implementation class Site

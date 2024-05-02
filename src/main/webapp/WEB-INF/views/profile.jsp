@@ -41,8 +41,8 @@
 					</table>
 				</div>
 					
-				<button class="button button-profile" type="button">Modifier les informations</button>
-				<a href="/Escalade/registertopo"><button class="button button-profile" type="button">Ajouter un topo</button></a>
+				<a class="button-link" href="#"><button class="button button-profile" type="button">Modifier les informations</button></a>
+				<a class="button-link" href="/Escalade/registertopo"><button class="button button-profile" type="button">Ajouter un topo</button></a>
 			</div>
 			
 			<div class="box-list box-list-right">
@@ -51,15 +51,37 @@
 						<h2 class="results-title">Vous possédez <c:out value="${sessionScope.user.topos.size()}" /> topo(s)</h2>
 				
 						<c:forEach var="topo" items="${sessionScope.user.topos}">
-							<div class="box result-box">
-								<div class="result-left">
-									<span class="topo-title">${topo.title} - <span id="available-${topo.id}">${topo.available}</span></span>
-									<span class="topo-description">${topo.description}</span>
-									<span class="topo-description">Publié le ${topo.releaseDate}</span>
-								</div>
-								
-								<button class="button availability-button" type="button" data-topo-id="${topo.id}" data-available="${not topo.available}">Rendre disponible</button>
-							</div>
+						    <div class="box result-box">
+						        <div class="result-left">
+						            <span class="topo-title">${topo.title}</span>
+						            <span class="topo-description">${topo.description}</span>
+						            <span class="topo-description">Publié le ${topo.releaseDate}</span>
+						            <button class="button half-sized remove-button red-button" type="button" data-topo-id="${topo.id}">Supprimer le topo</button>
+						        </div>
+						              
+						        <c:set var="reservationId" value="" />
+						        <c:set var="reservationStatus" value="" />
+						        
+						        <c:forEach var="res" items="${reservations}">
+						            <c:if test="${res.topoId == topo.id}">
+						        		<c:set var="reservationId" value="${res.id}" />
+						                <c:set var="reservationStatus" value="${res.status}" />
+						            </c:if>
+						        </c:forEach>
+						        
+						        <button class="button availability-button" type="button" data-topo-id="${topo.id}" data-available="${topo.available}" data-reservation-id="${reservationId}" data-reservation-status="${reservationStatus}">
+						            <c:choose>
+						                <c:when test="${not topo.available}">
+						                    <c:choose>
+						                        <c:when test="${reservationStatus == 'pending'}">Réservation en attente</c:when>
+						                        <c:when test="${reservationStatus == 'ongoing'}">Mettre fin à la réservation</c:when>
+						                        <c:otherwise>Rendre disponible</c:otherwise>
+						                    </c:choose>
+						                </c:when>
+						                <c:otherwise>Rendre indisponible</c:otherwise>
+						            </c:choose>
+						        </button>
+						    </div>
 						</c:forEach>
 					</c:when>
 												

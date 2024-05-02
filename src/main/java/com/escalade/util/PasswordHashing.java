@@ -1,4 +1,4 @@
-package com.escalade.utils;
+package com.escalade.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

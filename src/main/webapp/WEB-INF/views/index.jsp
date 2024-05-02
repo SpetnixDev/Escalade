@@ -11,5 +11,13 @@
 	
 	<body>
 		<%@ include file="../shared/header.jsp" %>
+		
+		<c:if test="${not empty sessionScope.errorOccured}">
+	        <div id="errorDiv" class="error-message">
+	            <span style="color: red;">${sessionScope.errorOccured}</span>
+	        </div>
+    	</c:if>
+		
+		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</body>
 </html>

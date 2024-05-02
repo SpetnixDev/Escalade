@@ -19,7 +19,9 @@
 			    	<input class="input-field" type="email" id="email" name="email" placeholder="email" required>
 		    		
 					<c:if test="${not empty requestScope.emailAlreadyUsed}">
-				    	<p style="color: red;">${requestScope.emailAlreadyUsed}</p>
+				    	<div id="errorDiv" class="error-message">
+				            <span style="color: red;">${requestScope.emailAlreadyUsed}</span>
+				        </div>
 				    </c:if>
 		    	</div>
 		    
@@ -43,5 +45,7 @@
 		</div>
 	    	
 	    <a class="link" href="/Escalade/signin">Se connecter</a>
+		
+		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</body>
 </html>

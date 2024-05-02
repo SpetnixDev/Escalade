@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.escalade.model.Site;
-import com.escalade.utils.StringUtils;
+import com.escalade.util.StringUtils;
 
 public class SiteService {
 	private ArrayList<Site> sites;

@@ -1,4 +1,4 @@
-package com.escalade.utils;
+package com.escalade.util;
 
 public class HttpUtils {
 	public static String getPathVariable(String pathInfo) {

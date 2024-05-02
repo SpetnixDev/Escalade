@@ -13,7 +13,9 @@
 	    <div class="container">
 		    <form class="login-form" method="post">
 			    <c:if test="${not empty requestScope.incorrectLogin}">
-			    	<p style="color: red;">${requestScope.incorrectLogin}</p>
+			    	<div id="errorDiv" class="error-message">
+			            <span style="color: red;">${requestScope.incorrectLogin}</span>
+			        </div>
 			    </c:if>
 			    
 		    	<div class="form-group">
@@ -31,5 +33,7 @@
 	    </div>
 	    	
 	    <a class="link" href="/Escalade/signup">Créer un compte</a>
+		
+		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</body>
 </html>

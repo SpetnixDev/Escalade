@@ -1,4 +1,4 @@
-package com.escalade.utils;
+package com.escalade.util;
 
 import java.sql.Date;
 import java.text.Normalizer;

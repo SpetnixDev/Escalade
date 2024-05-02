@@ -53,7 +53,8 @@ public class ToposServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String[] regions = request.getParameterValues("region");
-		String[] keywords = request.getParameter("searchbar").strip().split(" ");
+		String keywordsString = request.getParameter("searchbar").strip();		
+		String[] keywords = (keywordsString.length() == 0) ? null : keywordsString.split(" ");
 				
 		ArrayList<Topo> researchResults = (ArrayList<Topo>) topoService.requestTopos(regions, keywords);
 				

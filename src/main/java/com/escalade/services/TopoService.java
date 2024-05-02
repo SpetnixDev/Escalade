@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.escalade.config.DBConnector;
 import com.escalade.model.Topo;
-import com.escalade.utils.StringUtils;
+import com.escalade.util.StringUtils;
 
 public class TopoService {
 	public ArrayList<Topo> requestTopos(String[] regions, String[] keywords) {
@@ -32,8 +32,6 @@ public class TopoService {
                     
                     queryBuilder.append("location LIKE ?");
                     queryParams.add("%" + regions[i] + "%");
-                    
-                    System.out.println(regions[i]);
                 }
                 
                 queryBuilder.append(")");
@@ -56,7 +54,7 @@ public class TopoService {
             }
 
             preparedStatement = connection.prepareStatement(queryBuilder.toString());
-
+            
             for (int i = 0; i < queryParams.size(); i++) {
                 preparedStatement.setObject(i + 1, queryParams.get(i));
             }
@@ -159,7 +157,7 @@ public class TopoService {
 		ResultSet resultSet = null;
 		
 		try {			
-			String topoQuery = "SELECT * FROM Topo WHERE user_id = ?";
+			String topoQuery = "SELECT * FROM Topo WHERE user_id = ? ORDER BY title ASC";
             preparedStatement = connection.prepareStatement(topoQuery);
             preparedStatement.setInt(1, userId);
             resultSet = preparedStatement.executeQuery();
@@ -199,7 +197,7 @@ public class TopoService {
 		ResultSet resultSet = null;
 		
 		try {			
-			String topoQuery = "SELECT * FROM Topo";
+			String topoQuery = "SELECT * FROM Topo ORDER BY title ASC";
             preparedStatement = connection.prepareStatement(topoQuery);
             resultSet = preparedStatement.executeQuery();
             
@@ -263,6 +261,35 @@ public class TopoService {
 		
 		return topo;
 	}
+	
+	public boolean isTopoAvailable(int topoId) {
+		Connection connection = DBConnector.getDBConnection();
+	    PreparedStatement preparedStatement = null;
+	    boolean isAvailable = false;
+	    
+	    try {
+	        String query = "SELECT available FROM topo WHERE id = ?";
+	        preparedStatement = connection.prepareStatement(query);
+	        preparedStatement.setInt(1, topoId);
+	        
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        
+	        if (resultSet.next()) {
+	            isAvailable = resultSet.getBoolean("available");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+		} finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+	    
+		return isAvailable;
+	}
 
 	public Topo getTopoFromId(int topoId) {
 		Connection connection = DBConnector.getDBConnection();
@@ -300,5 +327,106 @@ public class TopoService {
         }
 
         return topo;
+	}
+
+	public List<Integer> requestReservedToposFromUser(int userId) {
+		Connection connection = DBConnector.getDBConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {			
+			String query = "SELECT * FROM topo WHERE id IN (SELECT topo_id FROM reservation WHERE status = 'pending') AND user_id = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+            resultSet = preparedStatement.executeQuery();
+            
+            List<Integer> topos = new ArrayList<>();
+            
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                
+                topos.add(id);
+            }
+    		
+    		return topos;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return null;
+	}
+	/*
+	private boolean isTopoReserved(int topoId) {
+	    Connection connection = DBConnector.getDBConnection();
+	    PreparedStatement preparedStatement = null;
+	    ResultSet resultSet = null;
+
+	    try {
+	        String query = "SELECT COUNT(*) AS count FROM reservation WHERE topo_id = ? AND status = 'pending'";
+	        preparedStatement = connection.prepareStatement(query);
+	        preparedStatement.setInt(1, topoId);
+	        resultSet = preparedStatement.executeQuery();
+
+	        if (resultSet.next()) {
+	            int count = resultSet.getInt("count");
+	            return count > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (preparedStatement != null) preparedStatement.close();
+	            if (connection != null) connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return false;
+	}*/
+
+	public boolean removeTopo(int topoId) {
+		Connection connection = DBConnector.getDBConnection();
+	    PreparedStatement deleteReservationStatement = null;
+	    PreparedStatement deleteTopoStatement = null;
+	    
+	    try {
+	        String deleteReservationQuery = "DELETE FROM reservation WHERE topo_id = ?";
+	        
+	        deleteReservationStatement = connection.prepareStatement(deleteReservationQuery);
+	        deleteReservationStatement.setInt(1, topoId);
+	        deleteReservationStatement.executeUpdate();
+	        
+	        String deleteTopoQuery = "DELETE FROM topo WHERE id = ?";
+	        
+	        deleteTopoStatement = connection.prepareStatement(deleteTopoQuery);
+	        deleteTopoStatement.setInt(1, topoId);
+	        
+	        int affectedRows = deleteTopoStatement.executeUpdate();
+	        
+	        if (affectedRows == 0) return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+            try {
+                if (deleteReservationStatement != null) deleteReservationStatement.close();
+                if (deleteTopoStatement != null) deleteTopoStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return true;
 	}
 }

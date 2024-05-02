@@ -167,14 +167,24 @@ input[type="checkbox"]:checked + .input-text {
 	color: red;
 }
 
+.orange-button {
+	color: rgb(221, 133, 0);
+}
+
 .button-profile {
 	width: 100%;
+}
+
+.button-link {
+	width: 100%;
 	margin-top: 1rem;
+	height: 2.5rem;
 }
 
 .button:hover {
 	background-color: #3c91b9;
 	color: white;
+	cursor: pointer;
 }
 
 .button:active {
@@ -196,6 +206,14 @@ input[type="checkbox"]:checked + .input-text {
 
 .red-button:active {
 	background-color: rgb(204, 0, 0);
+}
+
+.orange-button:hover {
+	background-color: rgb(221, 133, 0);
+}
+
+.orange-button:active {
+	background-color: rgb(215, 113, 0);
 }
 
 .searchbar {
@@ -296,20 +314,75 @@ input[type="checkbox"]:checked + .input-text {
 }
 
 .input-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
 }
 
 .input-field {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 }
 
 .link {
 	display: block;
 	text-align: center;
 	font-size: 12px;
+}
+
+.error-message {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffcccc;
+    padding: 5px 10px;
+    border: 1px solid #aaaaaa;
+    border-radius: 15px;
+    transition: opacity 2s ease-out;
+    opacity: 1;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.half-sized {
+	height: 50%;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+	background-color: lightgrey;
+	box-shadow: 0 0 0.5rem #888888;
+    border-radius: 6px;
+}
+
+.modal-content {
+    text-align: center;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+}
+
+.modal-button {
+    margin: 0 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
 }

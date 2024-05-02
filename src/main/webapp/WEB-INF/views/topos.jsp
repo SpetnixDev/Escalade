@@ -29,7 +29,7 @@
 	        		</div>
 					
 					<div class="box research-box">
-						<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="">
+						<input class="searchbar" type="text" name="searchbar" placeholder="Mots-clés..." value="${null}">
 					</div>
 		            
 		            <input class="submit" type="submit" value="Rechercher">
@@ -65,11 +65,13 @@
 						</div>
 						
 						<c:if test="${sessionScope.user != null && topo.ownerId != sessionScope.user.id && topo.available}">
-							<button class="button" type="button">Réserver</button>
+							<button class="button reservation-button" type="button" data-topo-id="${topo.id}">Réserver</button>
 						</c:if>
 					</div>
 				</c:forEach>
 			</div>
 	    </div>
+		
+		<script src="${pageContext.request.contextPath}/resources/script.js"></script> 
 	</body>
 </html>
