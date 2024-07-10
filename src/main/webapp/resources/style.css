@@ -91,6 +91,7 @@ li a:active {
 	padding: 0.5rem;
 	border-radius: 2px;
 	border: 1px solid #dddddd;
+	width: 95%;
 }
 
 .research-title, .results-title {
@@ -110,6 +111,11 @@ li a:active {
 	margin-left: 35%;
 }
 
+.submit-site-form {
+	width: 40%;
+	margin-top: 0.5rem;
+}
+
 .input-text {
 	margin-left: 1rem;
 }
@@ -120,6 +126,10 @@ input[type="checkbox"]:checked + .input-text {
 
 .box-list-right {
 	width: 70%;
+}
+
+.box-list-center {
+	width: 80%;
 }
 
 .result-box {
@@ -159,19 +169,28 @@ input[type="checkbox"]:checked + .input-text {
 	color: black;
 }
 
-.green-button {
+.remove-button {
+	width: 2.5rem;
+}
+
+.button:disabled {
+	background-color: #bbbbbb;
+	color: #eeeeee;
+}
+
+.green-button:enabled {
 	color: green;
 }
 
-.red-button {
+.red-button:enabled {
 	color: red;
 }
 
-.orange-button {
+.orange-button:enabled {
 	color: rgb(221, 133, 0);
 }
 
-.button-profile {
+.button-profile, .extended {
 	width: 100%;
 }
 
@@ -181,38 +200,38 @@ input[type="checkbox"]:checked + .input-text {
 	height: 2.5rem;
 }
 
-.button:hover {
+.button:hover:enabled {
 	background-color: #3c91b9;
 	color: white;
 	cursor: pointer;
 }
 
-.button:active {
+.button:active:enabled {
 	background-color: #32789a;
 	color: white;
 }
 
-.green-button:hover {
+.green-button:hover:enabled {
 	background-color: green;
 }
 
-.green-button:active {
+.green-button:active:enabled {
 	background-color: rgb(0, 102, 0);
 }
 
-.red-button:hover {
+.red-button:hover:enabled {
 	background-color: red;
 }
 
-.red-button:active {
+.red-button:active:enabled {
 	background-color: rgb(204, 0, 0);
 }
 
-.orange-button:hover {
+.orange-button:hover:enabled {
 	background-color: rgb(221, 133, 0);
 }
 
-.orange-button:active {
+.orange-button:active:enabled {
 	background-color: rgb(215, 113, 0);
 }
 
@@ -229,7 +248,7 @@ input[type="checkbox"]:checked + .input-text {
 	font-weight: bold;
 }
 
-.topo-description, .site-region {
+.topo-description, .site-description {
 	color: #4f4f4f;
 }
 
@@ -257,13 +276,18 @@ input[type="checkbox"]:checked + .input-text {
 	width: 90%;
 }
 
-.sector {
+.sector, .route, .pitch {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	flex-wrap: wrap;
 	margin-bottom: 0.2rem;
 	padding: 1rem;
+}
+
+.route, .pitch {
+	flex: 1;
 }
 
 .site-infos {
@@ -305,6 +329,12 @@ input[type="checkbox"]:checked + .input-text {
     display: block;
 }
 
+.vertical-centered.active {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .login-form {
 	width: 30%;
 }
@@ -332,17 +362,21 @@ input[type="checkbox"]:checked + .input-text {
 	font-size: 12px;
 }
 
-.error-message {
+.error-message-box {
     position: fixed;
-    bottom: 10px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ffcccc;
+    background-color: #ff8888;
     padding: 5px 10px;
-    border: 1px solid #aaaaaa;
-    border-radius: 15px;
+    border: 1px solid #880000;
+    border-radius: 1rem;
     transition: opacity 2s ease-out;
     opacity: 1;
+}
+
+.error-message {
+	color: #880000;
 }
 
 .hidden {
@@ -385,4 +419,47 @@ input[type="checkbox"]:checked + .input-text {
 
 .modal-button:hover {
     background-color: #0056b3;
+}
+
+#sectors {
+	width: 95%;
+	display: flex;
+	flex-direction: column;
+}
+
+.routes, .pitches {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.route-box {
+	background-color: #aaa;
+}
+
+.pitch-box {
+	background-color: #777;
+}
+
+.marged {
+	margin: 0 2rem; 
+}
+
+.block {
+	width: 100%;
+	display: block;
+}
+
+.quarter-length {
+	width: 25%;
+}
+
+.half-length {
+	width: 50%;
+	margin: 0 2rem;
+}
+
+.site-desc {
+	text-align: center;
 }

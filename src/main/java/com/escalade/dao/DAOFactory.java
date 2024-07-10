@@ -4,8 +4,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.escalade.dao.comment.CommentDAO;
+import com.escalade.dao.comment.CommentDAOImpl;
+import com.escalade.dao.pitch.PitchDAO;
+import com.escalade.dao.pitch.PitchDAOImpl;
 import com.escalade.dao.reservation.ReservationDAO;
 import com.escalade.dao.reservation.ReservationDAOImpl;
+import com.escalade.dao.route.RouteDAO;
+import com.escalade.dao.route.RouteDAOImpl;
+import com.escalade.dao.sector.SectorDAO;
+import com.escalade.dao.sector.SectorDAOImpl;
+import com.escalade.dao.site.SiteDAO;
+import com.escalade.dao.site.SiteDAOImpl;
 import com.escalade.dao.topo.TopoDAO;
 import com.escalade.dao.topo.TopoDAOImpl;
 import com.escalade.dao.user.UserDAO;
@@ -52,5 +62,25 @@ public class DAOFactory {
 	
 	public ReservationDAO getReservationDAO() {
 		return new ReservationDAOImpl(this);
+	}
+	
+	public CommentDAO getCommentDAO() {
+		return new CommentDAOImpl(this);
+	}
+	
+	public SiteDAO getSiteDAO() {
+		return new SiteDAOImpl(this);
+	}
+	
+	public SectorDAO getSectorDAO() {
+		return new SectorDAOImpl(this);
+	}
+	
+	public RouteDAO getRouteDAO() {
+		return new RouteDAOImpl(this);
+	}
+	
+	public PitchDAO getPitchDAO() {
+		return new PitchDAOImpl(this);
 	}
 }

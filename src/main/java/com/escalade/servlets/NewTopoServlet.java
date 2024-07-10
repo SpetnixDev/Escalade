@@ -8,9 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import com.escalade.model.User;
-import com.escalade.services.TopoService;
+import com.escalade.services.ServiceException;
+import com.escalade.services.topo.RegisterTopoService;
+import com.escalade.services.topo.RequestTopoService;
+import com.escalade.util.ConnectionChecker;
+import com.escalade.util.ConnectionException;
+import com.escalade.util.HttpUtils;
 import com.escalade.util.StringUtils;
 
 /**
@@ -20,21 +25,30 @@ import com.escalade.util.StringUtils;
 public class NewTopoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private TopoService topoService;
-       
+	private RegisterTopoService registerTopoService;
+	private RequestTopoService requestTopoService;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public NewTopoServlet() {
         super();
-        this.topoService = new TopoService();
+
+        registerTopoService = new RegisterTopoService();
+        requestTopoService = new RequestTopoService();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/registertopo.jsp").forward(request, response);
+		try {
+			ConnectionChecker.getSessionUser(request);
+			
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/registertopo.jsp").forward(request, response);
+		} catch (ConnectionException e) {
+			HttpUtils.handleException(request, response, e);
+		}
 	}
 
 	/**
@@ -48,21 +62,18 @@ public class NewTopoServlet extends HttpServlet {
 		String location = request.getParameter("location");
 		Date releaseDate = StringUtils.parseDate(request.getParameter("releaseDate"));
 		
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		
-		if (user == null) {
-			response.sendRedirect("/Escalade/signin");
-		} else {
-			if (topoService.registerNewTopo(user.getId(), title, description, location, releaseDate)) {
-				user.setTopos(topoService.requestToposFromUser(user.getId()));
-				
+		try {
+			User user = ConnectionChecker.getSessionUser(request);
+			
+			if (registerTopoService.registerNewTopo(user.getId(), title, description, location, releaseDate)) {
+				user.setTopos(requestTopoService.requestToposByUser(user.getId()));
 				response.sendRedirect("/Escalade/profile");
 			} else {
 				request.setAttribute("registerFailed", "Erreur lors de l'ajout d'un nouveau topo");
-				
 				request.getRequestDispatcher("/WEB-INF/views/registertopo.jsp").forward(request, response);
 			}
+		} catch (ConnectionException | ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 

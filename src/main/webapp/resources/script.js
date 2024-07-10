@@ -1,4 +1,6 @@
-function toggleContent(button) {
+function toggleContent(button, event) {
+	event.preventDefault();
+	
     var collapsibleContent = button.parentElement.nextElementSibling;
 
     if (collapsibleContent.classList.contains("active")) {
@@ -142,12 +144,11 @@ document.querySelectorAll(".reservation-button").forEach(button => {
 			body: JSON.stringify({ topoId: topoId })
 		})
 		.then(response => response.text())
-		.then(redirectUrl => window.location.href = redirectUrl)
 		.catch(error => console.error('Erreur lors de la requête:', error));
 	});
 });
 
-document.querySelectorAll(".remove-button").forEach(button => {
+document.querySelectorAll(".remove-topo-button").forEach(button => {
 	button.addEventListener("click", e => {
 		const topoId = e.target.dataset.topoId;
 		
@@ -159,7 +160,6 @@ document.querySelectorAll(".remove-button").forEach(button => {
 			body: JSON.stringify({ topoId: topoId })
 		})
 		.then(response => response.text())
-		.then(redirectUrl => window.location.href = redirectUrl)
 		.catch(error => console.error('Erreur lors de la requête:', error));
 	});
 });

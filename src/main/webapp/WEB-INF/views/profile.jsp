@@ -56,7 +56,7 @@
 						            <span class="topo-title">${topo.title}</span>
 						            <span class="topo-description">${topo.description}</span>
 						            <span class="topo-description">Publié le ${topo.releaseDate}</span>
-						            <button class="button half-sized remove-button red-button" type="button" data-topo-id="${topo.id}">Supprimer le topo</button>
+						            <button class="button half-sized remove-topo-button red-button" type="button" data-topo-id="${topo.id}">Supprimer le topo</button>
 						        </div>
 						              
 						        <c:set var="reservationId" value="" />

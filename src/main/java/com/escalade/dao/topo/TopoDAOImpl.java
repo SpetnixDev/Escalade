@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import com.escalade.config.DBConnector;
+
 import com.escalade.dao.DAOException;
 import com.escalade.dao.DAOFactory;
 import com.escalade.model.Topo;
@@ -175,7 +175,7 @@ public class TopoDAOImpl implements TopoDAO {
 		try {			
 			connection = daoFactory.getConnection();
 			
-			String topoQuery = "SELECT * FROM Topo WHERE user_id = ? ORDER BY title ASC";
+			String topoQuery = "SELECT * FROM topo WHERE user_id = ? ORDER BY title ASC";
             
 			preparedStatement = connection.prepareStatement(topoQuery);
             preparedStatement.setInt(1, userId);
@@ -301,14 +301,17 @@ public class TopoDAOImpl implements TopoDAO {
 
 	@Override
 	public ArrayList<Integer> requestReservedToposByUser(int userId) throws DAOException {
-		Connection connection = DBConnector.getDBConnection();
+		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<Integer> topos = null;
 		
-		try {			
+		try {
+			connection = daoFactory.getConnection();
+			
 			String query = "SELECT * FROM topo WHERE id IN (SELECT topo_id FROM reservation WHERE status = 'pending') AND user_id = ?";
-            preparedStatement = connection.prepareStatement(query);
+            
+			preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userId);
             resultSet = preparedStatement.executeQuery();
             

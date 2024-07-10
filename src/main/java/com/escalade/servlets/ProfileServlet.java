@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.escalade.model.Reservation;
 import com.escalade.model.User;
-import com.escalade.services.ReservationService;
 import com.escalade.services.ServiceException;
-import com.escalade.services.TopoService;
+import com.escalade.services.reservation.RequestReservationService;
 import com.escalade.services.topo.RequestTopoService;
 import com.escalade.util.ConnectionChecker;
 import com.escalade.util.ConnectionException;
+import com.escalade.util.HttpUtils;
 
 /**
  * Servlet implementation class Profile
@@ -24,7 +24,7 @@ import com.escalade.util.ConnectionException;
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private ReservationService reservationService;
+	private RequestReservationService requestReservationService;
     private RequestTopoService requestTopoService;
 	
     /**
@@ -33,7 +33,7 @@ public class ProfileServlet extends HttpServlet {
     public ProfileServlet() {
         super();
         
-        this.reservationService = new ReservationService();
+        this.requestReservationService = new RequestReservationService();
         this.requestTopoService = new RequestTopoService();
     }
 
@@ -41,30 +41,17 @@ public class ProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*User user = (User) request.getSession().getAttribute("user");
-		
-		if (user != null) {
-			user.setTopos(topoService.requestToposFromUser(user.getId()));
-			List<Reservation> reservations = reservationService.getReservationsConcerningUser(user.getId());
-			request.setAttribute("reservations", reservations);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(request, response);
-		} else {
-			response.sendRedirect("/Escalade/signin");
-		}*/
-		
 		try {
 			User user = ConnectionChecker.getSessionUser(request);
 			
 			user.setTopos(requestTopoService.requestToposByUser(user.getId()));
 			
-			List<Reservation> reservations = reservationService.getReservationsConcerningUser(user.getId());
+			List<Reservation> reservations = requestReservationService.requestReservationsConcerningUser(user.getId());
 			request.setAttribute("reservations", reservations);
 			
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(request, response);
 		} catch (ConnectionException | ServiceException e) {
-			request.getSession().setAttribute("error", e.getMessage());
-			
-			response.sendRedirect("/Escalade/home");
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 

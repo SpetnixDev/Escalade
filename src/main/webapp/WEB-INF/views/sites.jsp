@@ -74,7 +74,8 @@
 										Officiel</span>
 								</c:if>
 							</p>
-							<span class="site-region">${site.region}</span>
+							<span class="site-description">${site.description}</span>
+							<span class="site-description">${site.region} - Ce site contient <b>${site.sectors.size()} secteur(s)</b>.</span>
 						</div>
 	
 						<a href="site/${site.id}"><button class="button" type="button">Visiter</button></a>

@@ -14,6 +14,8 @@
 	
 		<h1 class="page-title">${site.name}</h1>
 		
+		<h4 class="site-desc">${site.description}</h4>
+		
 		<div class="container">
 			<div class="box-list box-list-left">
 				<div class="box site-infos">
@@ -31,7 +33,15 @@
 							</tr>
 							<tr>
 								<td><div>Longueur</div></td>
-								<td>6.24 Km</td>
+								<td>${site.getLength()}</td>
+							</tr>
+							<tr>
+								<td><div>Secteurs</div></td>
+								<td>${site.sectors.size()}</td>
+							</tr>
+							<tr>
+								<td><div>Voies</div></td>
+								<td>${site.getNumberOfRoutes()}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -44,11 +54,27 @@
 						<div class="sector">
 							<h3>${sector.name}</h3>
 							
-							<button class="button" onclick="toggleContent(this)">+</button>
+							<button class="button" onclick="toggleContent(this, event)">+</button>
 						</div>
 						
 						<div class="collapsible-content">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p>${sector.description}</p>
+							<p>Ce secteur contient <b>${sector.routes.size()} voie(s)</b> pour un total de <b>${sector.getFormattedLength()}</b>.</p>
+							
+							<c:forEach var="route" items="${sector.routes}">
+								<div class="box collapsible">
+									<div class="route">
+										<h3>${route.name}</h3>
+										
+										<button class="button" onclick="toggleContent(this, event)">+</button>
+									</div>
+									
+									<div class="collapsible-content">
+										<p>${route.description}</p>
+										<p>Cette voie contient <b>${route.pitches.size()} longueur(s)</b> pour un total de <b>${route.getFormattedLength()}</b>.</p>
+									</div>
+								</div>
+							</c:forEach>
 						</div>
 					</div>
 				</c:forEach>

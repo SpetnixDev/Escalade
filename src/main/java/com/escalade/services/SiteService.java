@@ -1,7 +1,6 @@
 package com.escalade.services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class SiteService {
 	}
 	
 	private void generateSites() {
-		sites = new ArrayList<>(Arrays.asList(SitesList.sites));
+		sites = null;
 	}
 	
 	public ArrayList<Site> requestSites(String[] regions, String[] keywords, boolean official) {

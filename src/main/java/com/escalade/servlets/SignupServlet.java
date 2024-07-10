@@ -1,16 +1,18 @@
 package com.escalade.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.escalade.model.User;
-import com.escalade.services.UserService;
-import com.escalade.util.PasswordHashing;
+import com.escalade.services.ServiceException;
+import com.escalade.services.user.RegisterUserService;
+import com.escalade.services.user.RequestUserService;
+import com.escalade.util.HttpUtils;
 
 /**
  * Servlet implementation class SignupServlet
@@ -19,14 +21,17 @@ import com.escalade.util.PasswordHashing;
 public class SignupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private UserService userService;
+	private RegisterUserService registerUserService;
+	private RequestUserService requestUserService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SignupServlet() {
         super();
-        this.userService = new UserService();
+
+        registerUserService = new RegisterUserService();
+        requestUserService = new RequestUserService();
     }
 
 	/**
@@ -45,19 +50,20 @@ public class SignupServlet extends HttpServlet {
 		String lastName = request.getParameter("lastName");
 		String password = request.getParameter("password");
 		
-		if (userService.isEmailAlreadyUsed(email)) {
-			request.setAttribute("emailAlreadyUsed", "L'email entré est déjà utilisé");
-			
-			request.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(request, response);
-		} else {
-			password = PasswordHashing.hashPassword(password);
-			
-			HttpSession session = request.getSession();
-			
-			User user = userService.registerUser(firstName, lastName, email, password);
-			session.setAttribute("user", user);
-			
-			response.sendRedirect("/Escalade/home");
+		try {
+			if (requestUserService.isEmailAlreadyUsed(email)) {
+				request.setAttribute("emailAlreadyUsed", "L'email entré est déjà utilisé");
+				
+				request.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(request, response);
+			} else {
+				User user = registerUserService.registerUser(email, firstName, lastName, password);
+				
+				request.getSession().setAttribute("user", user);
+				
+				response.sendRedirect("/Escalade/home");
+			}
+		} catch (ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 }

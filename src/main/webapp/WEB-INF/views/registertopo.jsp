@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
 	    <title>Enregistrer un topo</title>
 	    <link href="${pageContext.request.contextPath}/resources/style.css" rel="stylesheet" type="text/css" />
 	</head>
@@ -14,7 +15,9 @@
 		<div class="container">
 		    <form class="login-form" method="post">
 		    	<c:if test="${not empty requestScope.registerFailed}">
-			    	<p style="color: red;">${requestScope.registerFailed}</p>
+			    	<div id="errorDiv" class="error-message-box">
+			            <span class="error-message">${requestScope.registerFailed}</span>
+			        </div>
 			    </c:if>
 		    			    
 		    	<div class="form-group">
@@ -29,13 +32,12 @@
 		
 		    	<div class="form-group">
 			        <label class="input-label" for="location">Région :</label>
-			        <select class="input-field" id="location" name="location">
-    				</select>
+			        <select class="input-field" id="location" name="location"></select>
 		    	</div>
 		
 		    	<div class="form-group">
 			        <label class="input-label" for="releaseDate">Date de sortie :</label>
-			        <input class="input-field" type="date" min="1900-01-01" id="releaseDate" name="releaseDate" placeholder="" required>
+			        <input class="input-field" type="date" min="1800-01-01" id="releaseDate" name="releaseDate" placeholder="" required>
 		    	</div>
 		
 		        <input class="submit" type="submit" value="Ajouter un topo">

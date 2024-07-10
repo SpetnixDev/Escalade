@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.escalade.config.DBConnector;
 import com.escalade.dao.DAOException;
 import com.escalade.dao.DAOFactory;
 import com.escalade.model.Reservation;

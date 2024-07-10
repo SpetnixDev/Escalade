@@ -1,6 +1,7 @@
 package com.escalade.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.escalade.model.Site;
-import com.escalade.services.SiteService;
+import com.escalade.services.ServiceException;
+import com.escalade.services.site.RequestSiteService;
 import com.escalade.util.HttpUtils;
 
 /**
@@ -17,7 +19,7 @@ import com.escalade.util.HttpUtils;
 @WebServlet("/site/*")
 public class SiteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private SiteService siteService;
+	private RequestSiteService requestSiteService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -25,7 +27,7 @@ public class SiteServlet extends HttpServlet {
     public SiteServlet() {
         super();
         
-        siteService = new SiteService();
+        requestSiteService = new RequestSiteService();
     }
 
 	/**
@@ -34,14 +36,16 @@ public class SiteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String id = HttpUtils.getPathVariable(request.getPathInfo());
-		Site site;
+		Site site = null;
 		
 		try {
 			int siteId = Integer.valueOf(id);
 			
-			site = siteService.getSiteByID(siteId);
+			site = requestSiteService.requestSite(siteId);
 		} catch (NumberFormatException e) {
 			site = null;
+		} catch (ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 		
 		if (site == null) {

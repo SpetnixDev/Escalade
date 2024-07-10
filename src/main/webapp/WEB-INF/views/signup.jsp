@@ -19,8 +19,8 @@
 			    	<input class="input-field" type="email" id="email" name="email" placeholder="email" required>
 		    		
 					<c:if test="${not empty requestScope.emailAlreadyUsed}">
-				    	<div id="errorDiv" class="error-message">
-				            <span style="color: red;">${requestScope.emailAlreadyUsed}</span>
+				    	<div id="errorDiv" class="error-message-box">
+				            <span class="error-message">${requestScope.emailAlreadyUsed}</span>
 				        </div>
 				    </c:if>
 		    	</div>

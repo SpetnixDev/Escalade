@@ -8,11 +8,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.escalade.model.Topo;
 import com.escalade.model.User;
-import com.escalade.services.TopoService;
+import com.escalade.services.ServiceException;
+import com.escalade.services.topo.RequestTopoService;
+import com.escalade.services.topo.UpdateTopoService;
+import com.escalade.util.ConnectionChecker;
+import com.escalade.util.ConnectionException;
+import com.escalade.util.HttpUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,14 +26,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/updatetopo")
 public class UpdateTopoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TopoService topoService;
+	
+	private UpdateTopoService updateTopoService;
+	private RequestTopoService requestTopoService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public UpdateTopoServlet() {
         super();
-        this.topoService = new TopoService();
+        
+        this.updateTopoService = new UpdateTopoService();
+        this.requestTopoService = new RequestTopoService();
     }
 
 	/**
@@ -46,12 +54,10 @@ public class UpdateTopoServlet extends HttpServlet {
 		
 		Map<String, Object> requestBody = mapper.readValue(request.getInputStream(), new TypeReference<Map<String, Object>>(){});
 	    
-	    HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		
-		if (user == null) {
-			response.sendRedirect("/Escalade/signin");
-		} else {
+		try {
+			User user = ConnectionChecker.getSessionUser(request);
+			
+
 		    String topoIdString = (String) requestBody.get("topoId");
 		    int topoId = Integer.parseInt(topoIdString);
 		    
@@ -59,14 +65,16 @@ public class UpdateTopoServlet extends HttpServlet {
 		    
 		    Topo topo = null;
 		    
-		    if ((topo = topoService.updateTopoAvailability(topoId, !topoAvailable)) != null) {
+		    if ((topo = updateTopoService.updateTopoAvailability(topoId, !topoAvailable)) != null) {
 			    String jsonResponse = mapper.writeValueAsString(topo);
 			    
-			    user.setTopos(topoService.requestToposFromUser(user.getId()));
+			    user.setTopos(requestTopoService.requestToposByUser(user.getId()));
 			    
 			    response.setContentType("application/json");
 			    response.getWriter().write(jsonResponse);
 		    }
+		} catch (ConnectionException | ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 }

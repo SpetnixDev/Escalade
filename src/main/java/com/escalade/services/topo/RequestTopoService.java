@@ -15,12 +15,22 @@ public class RequestTopoService {
 		topoDAOImpl = (TopoDAOImpl) DAOFactory.getInstance().getTopoDAO();
 	}
 	
-	public ArrayList<Topo> requestTopos() {
-		return null;
+	public ArrayList<Topo> requestTopos() throws ServiceException {
+		try {
+			return topoDAOImpl.requestTopos();
+		} catch(DAOException e) {
+			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
+		}
 	}
 	
-	public ArrayList<Topo> requestTopos(String[] regions, String[] keywords) {
-		return null;
+	public ArrayList<Topo> requestTopos(String[] regions, String keywordsString) throws ServiceException {
+		String[] keywords = (keywordsString.length() == 0) ? null : keywordsString.split(" ");
+		
+		try {
+			return topoDAOImpl.requestTopos(regions, keywords);
+		} catch(DAOException e) {
+			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
+		}
 	}
 	
 	public Topo requestTopoById(int id) {
@@ -34,6 +44,22 @@ public class RequestTopoService {
 	public ArrayList<Topo> requestToposByUser(int userId) throws ServiceException {
 		try {
 			return topoDAOImpl.requestToposByUser(userId);
+		} catch (DAOException e) {
+			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
+		}
+	}
+	
+	public ArrayList<String> requestLocations() throws ServiceException {
+		try {
+			return topoDAOImpl.requestLocations();
+		} catch(DAOException e) {
+			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
+		}
+	}
+	
+	public boolean isTopoAvailable(int topoId) throws ServiceException {
+		try {
+			return topoDAOImpl.isTopoAvailable(topoId);
 		} catch (DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}

@@ -3,20 +3,23 @@ package com.escalade.services.topo;
 import com.escalade.dao.DAOException;
 import com.escalade.dao.DAOFactory;
 import com.escalade.dao.topo.TopoDAOImpl;
+import com.escalade.model.Topo;
 import com.escalade.services.ServiceException;
 
-public class RemoveTopoService {
+public class UpdateTopoService {
 	private TopoDAOImpl topoDAOImpl;
 	
-	public RemoveTopoService() {
+	public UpdateTopoService() {
 		topoDAOImpl = (TopoDAOImpl) DAOFactory.getInstance().getTopoDAO();
 	}
 	
-	public boolean removeTopo(int topoId) throws ServiceException {
+
+	public Topo updateTopoAvailability(int topoId, boolean availability) throws ServiceException {
 		try {
-			return topoDAOImpl.removeTopo(topoId);
+			return topoDAOImpl.updateTopoAvailability(topoId, availability);
 		} catch (DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}
 	}
+	
 }

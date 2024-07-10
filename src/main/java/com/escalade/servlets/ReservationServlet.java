@@ -8,11 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.escalade.model.User;
-import com.escalade.services.ReservationService;
-import com.escalade.services.TopoService;
+import com.escalade.services.ServiceException;
+import com.escalade.services.reservation.CreateReservationService;
+import com.escalade.services.topo.RequestTopoService;
+import com.escalade.util.ConnectionChecker;
+import com.escalade.util.ConnectionException;
+import com.escalade.util.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -21,8 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/reservetopo")
 public class ReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TopoService topoService;
-	private ReservationService reservationService;
+	private RequestTopoService requestTopoService;
+	private CreateReservationService createReservationService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -30,8 +33,8 @@ public class ReservationServlet extends HttpServlet {
     public ReservationServlet() {
         super();
         
-        this.topoService = new TopoService();
-        this.reservationService = new ReservationService();
+        requestTopoService = new RequestTopoService();
+        createReservationService = new CreateReservationService();
     }
 
 	/**
@@ -48,14 +51,18 @@ public class ReservationServlet extends HttpServlet {
 		
 		int topoId = Integer.parseInt((String) mapper.readValue(request.getInputStream(), Map.class).get("topoId"));
 		
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		
-		if (topoService.isTopoAvailable(topoId) && user != null) {
-			reservationService.createReservation(user.getId(), topoId);
-		} else {
-			session.setAttribute("errorOccured", "Une erreur est survenue, veuillez réessayez plus tard.");
-			response.getWriter().write("/Escalade/home");
+		try {
+			User user = ConnectionChecker.getSessionUser(request);
+			
+			if (requestTopoService.isTopoAvailable(topoId)) {
+				createReservationService.createReservation(user.getId(), topoId);
+				response.sendRedirect("/Escalade/topos");
+			} else {
+				request.getSession().setAttribute("error", "Une erreur est survenue, veuillez réessayez plus tard.");
+				response.sendRedirect("/Escalade/home");
+			}
+		} catch (ConnectionException | ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 }

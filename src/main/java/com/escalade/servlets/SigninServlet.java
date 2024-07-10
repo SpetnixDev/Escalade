@@ -1,6 +1,7 @@
 package com.escalade.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,8 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.escalade.model.User;
-import com.escalade.services.UserService;
-import com.escalade.util.PasswordHashing;
+import com.escalade.services.ServiceException;
+import com.escalade.services.user.UserAuthenticationService;
+import com.escalade.util.HttpUtils;
 
 /**
  * Servlet implementation class SigninServlet
@@ -19,21 +21,29 @@ import com.escalade.util.PasswordHashing;
 public class SigninServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private UserService userService;
+	private UserAuthenticationService userAuthenticationService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SigninServlet() {
         super();
-    	this.userService = new UserService();
+    	
+        userAuthenticationService = new UserAuthenticationService();
     }
     
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		String errorMessage = (String) session.getAttribute("error");
+		
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
+		
+		if (errorMessage != null) {
+			session.removeAttribute("error");
+		}
 	}
 
 	/**
@@ -41,18 +51,22 @@ public class SigninServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String hashedPassword = PasswordHashing.hashPassword(request.getParameter("password"));
+		String password = request.getParameter("password");
 		User user;
 		
-		if ((user = userService.authenticateUser(email, hashedPassword)) != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("user", user);
-			
-			response.sendRedirect("/Escalade/home");
-		} else {
-			request.setAttribute("incorrectLogin", "Identifiants incorrects");
-			
-			request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
+		try {
+			if ((user = userAuthenticationService.authenticateUser(email, password)) != null) {
+				HttpSession session = request.getSession();
+				session.setAttribute("user", user);
+				
+				response.sendRedirect("/Escalade/home");
+			} else {
+				request.setAttribute("incorrectLogin", "Identifiants incorrects");
+				
+				request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
+			}
+		} catch (ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 }

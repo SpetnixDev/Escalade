@@ -2,7 +2,6 @@ package com.escalade.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.escalade.model.Topo;
-import com.escalade.services.TopoService;
+import com.escalade.services.ServiceException;
+import com.escalade.services.topo.RequestTopoService;
+import com.escalade.util.HttpUtils;
 
 /**
  * Servlet implementation class ToposServlet
@@ -19,16 +20,17 @@ import com.escalade.services.TopoService;
 @WebServlet("/topos")
 public class ToposServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TopoService topoService;
-	private List<String> regionsList;
+	
+	private RequestTopoService requestTopoService;
+	private ArrayList<Topo> researchResults;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ToposServlet() {
         super();
-        topoService = new TopoService();
-        regionsList = topoService.requestLocations();
+        
+        requestTopoService = new RequestTopoService();
     }
 
 	/**
@@ -37,9 +39,12 @@ public class ToposServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		request.setAttribute("regionsList", regionsList);
-		
-		List<Topo> researchResults = topoService.requestTopos();
+		try {
+			request.setAttribute("regionsList", requestTopoService.requestLocations());
+			researchResults = requestTopoService.requestTopos();
+		} catch (ServiceException e) {
+			HttpUtils.handleException(request, response, e);
+		}
 
 		request.setAttribute("results", researchResults);
 		
@@ -54,11 +59,15 @@ public class ToposServlet extends HttpServlet {
 		
 		String[] regions = request.getParameterValues("region");
 		String keywordsString = request.getParameter("searchbar").strip();		
-		String[] keywords = (keywordsString.length() == 0) ? null : keywordsString.split(" ");
-				
-		ArrayList<Topo> researchResults = (ArrayList<Topo>) topoService.requestTopos(regions, keywords);
-				
-		request.setAttribute("regionsList", regionsList);
+
+		
+		try {
+			request.setAttribute("regionsList", requestTopoService.requestLocations());
+			researchResults = requestTopoService.requestTopos(regions, keywordsString);
+		} catch (ServiceException e) {
+			HttpUtils.handleException(request, response, e);
+		}
+		
 		request.setAttribute("results", researchResults);
 				
 		request.getRequestDispatcher("/WEB-INF/views/topos.jsp").forward(request, response);

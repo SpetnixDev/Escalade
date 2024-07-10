@@ -13,8 +13,14 @@
 	    <div class="container">
 		    <form class="login-form" method="post">
 			    <c:if test="${not empty requestScope.incorrectLogin}">
-			    	<div id="errorDiv" class="error-message">
-			            <span style="color: red;">${requestScope.incorrectLogin}</span>
+			    	<div id="errorDiv" class="error-message-box">
+			            <span class="error-message">${requestScope.incorrectLogin}</span>
+			        </div>
+			    </c:if>
+			    
+			    <c:if test="${not empty sessionScope.error}">
+			    	<div id="errorDiv" class="error-message-box">
+			            <span class="error-message">${sessionScope.error}</span>
 			        </div>
 			    </c:if>
 			    

@@ -8,10 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.escalade.model.User;
-import com.escalade.services.TopoService;
+import com.escalade.services.ServiceException;
+import com.escalade.services.topo.RemoveTopoService;
+import com.escalade.util.ConnectionChecker;
+import com.escalade.util.ConnectionException;
+import com.escalade.util.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -20,22 +22,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/removetopo")
 public class RemoveTopoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TopoService topoService;
+	private RemoveTopoService removeTopoService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public RemoveTopoServlet() {
         super();
-        this.topoService = new TopoService();
+        removeTopoService = new RemoveTopoService();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -45,17 +45,16 @@ public class RemoveTopoServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		int topoId = Integer.parseInt((String) mapper.readValue(request.getInputStream(), Map.class).get("topoId"));
-	    
-	    HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
 		
-		if (user == null) {
-			response.sendRedirect("/Escalade/signin");
-		} else {		    
-		    if (!topoService.removeTopo(topoId)) {
-		    	session.setAttribute("errorOccured", "Une erreur est survenue, veuillez réessayez plus tard.");
-				response.getWriter().write("/Escalade/home");
-		    }
+		try {
+			ConnectionChecker.getSessionUser(request);
+			
+			if (!removeTopoService.removeTopo(topoId)) {
+				request.getSession().setAttribute("error", "Une erreur est survenue, veuillez réessayez plus tard.");
+				response.sendRedirect("/Escalade/home");
+			}
+		} catch(ConnectionException | ServiceException e) {
+			HttpUtils.handleException(request, response, e);
 		}
 	}
 

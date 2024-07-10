@@ -12,9 +12,9 @@
 	<body>
 		<%@ include file="../shared/header.jsp" %>
 		
-		<c:if test="${not empty sessionScope.errorOccured}">
-	        <div id="errorDiv" class="error-message">
-	            <span style="color: red;">${sessionScope.errorOccured}</span>
+		<c:if test="${not empty sessionScope.error}">
+	        <div id="errorDiv" class="error-message-box">
+	            <span class="error-message">${sessionScope.error}</span>
 	        </div>
     	</c:if>
 		

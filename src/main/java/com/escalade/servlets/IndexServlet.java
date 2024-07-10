@@ -28,12 +28,12 @@ public class IndexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String errorMessage = (String) session.getAttribute("errorOccured");
+		String errorMessage = (String) session.getAttribute("error");
 		
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
 		
 		if (errorMessage != null) {
-			session.removeAttribute("errorOccured");
+			session.removeAttribute("error");
 		}
 	}
 
