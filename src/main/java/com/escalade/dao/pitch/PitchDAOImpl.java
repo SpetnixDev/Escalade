@@ -1,4 +1,4 @@
-package com.escalade.dao.pitch;
+/*package com.escalade.dao.pitch;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,4 +91,80 @@ public class PitchDAOImpl implements PitchDAO {
             DBUtils.closeQuietly(connection, resultSet, preparedStatement);
 	    }
 	}
+}*/
+
+package com.escalade.dao.pitch;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import com.escalade.dao.DAOException;
+import com.escalade.model.Pitch;
+
+@Repository
+public class PitchDAOImpl implements PitchDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public void registerPitch(int routeId, String name, String description, double length, String rating) throws DAOException {
+        final String query = "INSERT INTO pitch (route_id, name, description, length, rating) VALUES (?, ?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(query, new String[] {"id"});
+                
+                ps.setInt(1, routeId);
+                ps.setString(2, name);
+                ps.setString(3, description);
+                ps.setDouble(4, length);
+                ps.setString(5, rating);
+                
+                return ps;
+            }, keyHolder);
+
+            if (keyHolder.getKey() == null) {
+                throw new DAOException("Un problème est survenu lors de la création du pitch");
+            }
+        } catch (Exception e) {
+            throw new DAOException("Impossible de communiquer avec la base de données");
+        }
+    }
+
+    @Override
+    public List<Pitch> requestPitchesByRoute(int routeId) throws DAOException {
+        String query = "SELECT * FROM pitch WHERE route_id = ?";
+
+        try {
+            return jdbcTemplate.query(query, new PitchRowMapper(), new Object[]{routeId});
+        } catch (Exception e) {
+            throw new DAOException("Impossible de communiquer avec la base de données");
+        }
+    }
+
+    private static class PitchRowMapper implements RowMapper<Pitch> {
+        @Override
+        public Pitch mapRow(ResultSet rs, int rowNum) throws SQLException {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+            double length = rs.getDouble("length");
+            String rating = rs.getString("rating");
+            
+            return new Pitch(id, name, description, length, rating);
+        }
+    }
 }
+

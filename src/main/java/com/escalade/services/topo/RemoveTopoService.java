@@ -1,20 +1,20 @@
 package com.escalade.services.topo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.escalade.dao.DAOException;
-import com.escalade.dao.DAOFactory;
-import com.escalade.dao.topo.TopoDAOImpl;
+import com.escalade.dao.topo.TopoDAO;
 import com.escalade.services.ServiceException;
 
+@Service
 public class RemoveTopoService {
-	private TopoDAOImpl topoDAOImpl;
-	
-	public RemoveTopoService() {
-		topoDAOImpl = (TopoDAOImpl) DAOFactory.getInstance().getTopoDAO();
-	}
+	@Autowired
+	private TopoDAO topoDAO;
 	
 	public boolean removeTopo(int topoId) throws ServiceException {
 		try {
-			return topoDAOImpl.removeTopo(topoId);
+			return topoDAO.removeTopo(topoId);
 		} catch (DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}

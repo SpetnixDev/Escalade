@@ -3,11 +3,17 @@ package com.escalade.servlets;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.escalade.model.Topo;
 import com.escalade.model.User;
@@ -27,17 +33,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class UpdateTopoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	@Autowired
 	private UpdateTopoService updateTopoService;
+	
+	@Autowired
 	private RequestTopoService requestTopoService;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdateTopoServlet() {
-        super();
-        
-        this.updateTopoService = new UpdateTopoService();
-        this.requestTopoService = new RequestTopoService();
+	
+	private WebApplicationContext springContext;
+
+    @Override
+    public void init(final ServletConfig config) throws ServletException {
+        super.init(config);
+        springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+        final AutowireCapableBeanFactory beanFactory = springContext.getAutowireCapableBeanFactory();
+        beanFactory.autowireBean(this);
     }
 
 	/**

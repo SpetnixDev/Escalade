@@ -3,9 +3,12 @@ package com.escalade.dao.topo;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Repository;
+
 import com.escalade.dao.DAOException;
 import com.escalade.model.Topo;
 
+@Repository
 public interface TopoDAO {
 	ArrayList<Topo> requestTopos() throws DAOException;
 	

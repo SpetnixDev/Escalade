@@ -2,22 +2,22 @@ package com.escalade.services.topo;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.escalade.dao.DAOException;
-import com.escalade.dao.DAOFactory;
-import com.escalade.dao.topo.TopoDAOImpl;
+import com.escalade.dao.topo.TopoDAO;
 import com.escalade.model.Topo;
 import com.escalade.services.ServiceException;
 
+@Service
 public class RequestTopoService {
-	private TopoDAOImpl topoDAOImpl;
-	
-	public RequestTopoService() {
-		topoDAOImpl = (TopoDAOImpl) DAOFactory.getInstance().getTopoDAO();
-	}
+	@Autowired
+	private TopoDAO topoDAO;
 	
 	public ArrayList<Topo> requestTopos() throws ServiceException {
 		try {
-			return topoDAOImpl.requestTopos();
+			return topoDAO.requestTopos();
 		} catch(DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}
@@ -27,7 +27,7 @@ public class RequestTopoService {
 		String[] keywords = (keywordsString.length() == 0) ? null : keywordsString.split(" ");
 		
 		try {
-			return topoDAOImpl.requestTopos(regions, keywords);
+			return topoDAO.requestTopos(regions, keywords);
 		} catch(DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}
@@ -43,7 +43,7 @@ public class RequestTopoService {
 	
 	public ArrayList<Topo> requestToposByUser(int userId) throws ServiceException {
 		try {
-			return topoDAOImpl.requestToposByUser(userId);
+			return topoDAO.requestToposByUser(userId);
 		} catch (DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}
@@ -51,7 +51,7 @@ public class RequestTopoService {
 	
 	public ArrayList<String> requestLocations() throws ServiceException {
 		try {
-			return topoDAOImpl.requestLocations();
+			return topoDAO.requestLocations();
 		} catch(DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}
@@ -59,7 +59,7 @@ public class RequestTopoService {
 	
 	public boolean isTopoAvailable(int topoId) throws ServiceException {
 		try {
-			return topoDAOImpl.isTopoAvailable(topoId);
+			return topoDAO.isTopoAvailable(topoId);
 		} catch (DAOException e) {
 			throw new ServiceException("Une erreur est survenue, veuillez réessayer plus tard.");
 		}

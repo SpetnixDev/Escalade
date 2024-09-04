@@ -1,9 +1,10 @@
 function collectData() {
     const site = {
         siteName: document.getElementById('siteName').value,
-        location: document.getElementById('location').value,
         description: document.getElementById('description').value,
-        
+        location: document.getElementById('location').value,
+        rating: document.getElementById('rating').value,
+                
         sectors: []
     };
 
@@ -16,7 +17,7 @@ function collectData() {
             routes: []
         };
 
-        sector.nextElementSibling.querySelectorAll('.route').forEach(route => {
+        sector.querySelectorAll('.route').forEach(route => {
             const routeData = {
                 id: route.getAttribute('data-id'),
                 routeName: route.querySelector('input[name="routeName"]').value,
@@ -25,13 +26,13 @@ function collectData() {
                 pitches: []
             };
 
-            route.nextElementSibling.querySelectorAll('.pitch').forEach(pitch => {
+            route.querySelectorAll('.pitch').forEach(pitch => {
                 const pitchData = {
                     id: pitch.getAttribute('data-id'),
                     pitchName: pitch.querySelector('input[name="pitchName"]').value,
                     pitchDesc: pitch.querySelector('input[name="pitchDesc"]').value,
                     pitchLength: pitch.querySelector('input[name="pitchLength"]').value,
-                    pitchDifficulty: pitch.querySelector('input[name="pitchDifficulty"]').value
+                    pitchDifficulty: pitch.querySelector('select[name="pitchDifficulty"]').value
                 };
                 
                 routeData.pitches.push(pitchData);

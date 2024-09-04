@@ -22,6 +22,13 @@ public class Topo {
 		this.available = available;
 	}
 	
+	public Topo(String title, String description, String location, Date releaseDate) {
+		this.title = title;
+		this.description = description;
+		this.location = location;
+		this.releaseDate = releaseDate;
+	}
+	
 	public int getId() {
 		return id;
 	}

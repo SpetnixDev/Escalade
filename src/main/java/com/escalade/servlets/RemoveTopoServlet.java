@@ -3,11 +3,17 @@ package com.escalade.servlets;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.escalade.services.ServiceException;
 import com.escalade.services.topo.RemoveTopoService;
@@ -22,14 +28,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/removetopo")
 public class RemoveTopoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
 	private RemoveTopoService removeTopoService;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RemoveTopoServlet() {
-        super();
-        removeTopoService = new RemoveTopoService();
+	
+	private WebApplicationContext springContext;
+
+    @Override
+    public void init(final ServletConfig config) throws ServletException {
+        super.init(config);
+        springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+        final AutowireCapableBeanFactory beanFactory = springContext.getAutowireCapableBeanFactory();
+        beanFactory.autowireBean(this);
     }
 
 	/**
@@ -51,7 +61,6 @@ public class RemoveTopoServlet extends HttpServlet {
 			
 			if (!removeTopoService.removeTopo(topoId)) {
 				request.getSession().setAttribute("error", "Une erreur est survenue, veuillez réessayez plus tard.");
-				response.sendRedirect("/Escalade/home");
 			}
 		} catch(ConnectionException | ServiceException e) {
 			HttpUtils.handleException(request, response, e);

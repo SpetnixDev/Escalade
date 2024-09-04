@@ -14,21 +14,25 @@ public class Site {
 	@Override
 	public String toString() {
 		return "Site [id=" + id + ", name=" + name + ", description=" + description + ", region=" + region
-				+ ", sectors=" + sectors + ", official=" + official + "]";
+				+ ", sectors=" + sectors + ", rating=" + rating + ", official=" + official + "]";
 	}
 
 	private String name;
 	private String description;
 	private String region;
+	private String rating;
 	private List<Sector> sectors;
 	private boolean official;
 	
 	@JsonCreator
-	public Site(@JsonProperty("siteName") String name, @JsonProperty("location") String region, @JsonProperty("description") String description, @JsonProperty("sectors") List<Sector> sectors) {
+	public Site(@JsonProperty("siteName") String name, @JsonProperty("location") String region,
+		@JsonProperty("description") String description, @JsonProperty("rating") String rating,
+		@JsonProperty("sectors") List<Sector> sectors) {
 		id = 0; 
 		this.name = name;
 		this.description = description;
 		this.region = region;
+		this.rating = rating;
 		this.sectors = sectors;
 		official = false;
 	}
@@ -45,11 +49,12 @@ public class Site {
 		official = random.nextBoolean();
 	}
 
-	public Site(int id, String name, String description, String region, boolean official) {
+	public Site(int id, String name, String description, String region, String rating, boolean official) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.region = region;
+		this.rating = rating;
 		this.official = official;
 		
 		sectors = new ArrayList<>();
@@ -69,6 +74,10 @@ public class Site {
 	
 	public String getRegion() {
 		return region;
+	}
+	
+	public String getRating() {
+		return rating;
 	}
 	
 	public List<Sector> getSectors() {

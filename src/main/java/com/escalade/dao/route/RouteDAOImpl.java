@@ -1,4 +1,4 @@
-package com.escalade.dao.route;
+/*package com.escalade.dao.route;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -90,4 +90,74 @@ public class RouteDAOImpl implements RouteDAO {
 	    }
 	}
 
+}*/
+
+package com.escalade.dao.route;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import com.escalade.dao.DAOException;
+import com.escalade.model.Route;
+
+@Repository
+public class RouteDAOImpl implements RouteDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public int registerRoute(int sectorId, String name, String description) throws DAOException {
+        final String query = "INSERT INTO route (sector_id, name, description) VALUES (?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(query, new String[] {"id"});
+                
+                ps.setInt(1, sectorId);
+                ps.setString(2, name);
+                ps.setString(3, description);
+                
+                return ps;
+            }, keyHolder);
+
+            return keyHolder.getKey().intValue();
+        } catch (Exception e) {
+            throw new DAOException("Impossible de communiquer avec la base de données");
+        }
+    }
+
+    @Override
+    public List<Route> requestRoutesBySector(int sectorId) throws DAOException {
+        String query = "SELECT * FROM route WHERE sector_id = ?";
+
+        try {
+            return jdbcTemplate.query(query, new RouteRowMapper(), new Object[]{sectorId});
+        } catch (Exception e) {
+            throw new DAOException("Impossible de communiquer avec la base de données");
+        }
+    }
+
+    private static class RouteRowMapper implements RowMapper<Route> {
+        @Override
+        public Route mapRow(ResultSet rs, int rowNum) throws SQLException {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+            
+            return new Route(id, name, description);
+        }
+    }
 }
+

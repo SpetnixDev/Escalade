@@ -1,6 +1,7 @@
 package com.escalade.model;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Comment {
 	private int id;
@@ -8,9 +9,9 @@ public class Comment {
 	private int siteId;
 	private String content;
 	private Date date;
+	private User user;
 	
 	public Comment(int id, int userId, int siteId, String content, Date date) {
-		super();
 		this.id = id;
 		this.userId = userId;
 		this.siteId = siteId;
@@ -34,7 +35,18 @@ public class Comment {
 		return content;
 	}
 
-	public Date getDate() {
-		return date;
+	public String getDate() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		String formattedDate = format.format(date);
+		
+		return formattedDate;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
