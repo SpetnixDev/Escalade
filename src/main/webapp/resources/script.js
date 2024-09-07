@@ -210,7 +210,7 @@ function addCommentListeners() {
 	        modal.classList.add('modal-overlay');
 	        modal.innerHTML = `
 	            <div class="modal-content">
-	                <div class="modal-buttons">
+	                <div class="d-flex flex-wrap modal-buttons gap-2">
 	                    <textarea class="comment-field col-12 mb-2" name="commentmodificationarea" oninput="autoAdjustHeight(this)" placeholder="Ecrivez un commentaire ici...">${commentContent}</textarea>
 	                    <button class="button px-3" id="cancel-editing" name="cancel-editing">Annuler</button>
 						<button class="button px-3" id="modify-comment" name="modify-comment">Modifier</button>
@@ -225,7 +225,7 @@ function addCommentListeners() {
 	        });
 	
 	        document.getElementById('modify-comment').addEventListener('click', function() {
-				const newCommentContent = document.querySelector("textarea[name='commentmodificationarea']").value;
+				const newCommentContent = document.querySelector("textarea[name='commentmodificationarea']").value.trim();
 
                 if (newCommentContent !== commentContent && newCommentContent.trim() !== "") {
                     fetch("/Escalade/modifycomment", {

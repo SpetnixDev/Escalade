@@ -37,7 +37,7 @@ li a:active {
     left: 50%;
     transform: translateX(-50%);
     background-color: #ff8888;
-    padding: 5px 10px;
+    padding: 5px 1rem;
     border: 1px solid #880000;
     border-radius: 1rem;
     transition: opacity 2s ease-out;
@@ -183,4 +183,8 @@ li a:active {
 .comment-content {
 	white-space: break-spaces;
 	margin: 0;
+}
+
+.hidden {
+	opacity: 0;
 }

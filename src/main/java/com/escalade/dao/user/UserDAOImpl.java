@@ -1,7 +1,10 @@
 package com.escalade.dao.user;
 
-import com.escalade.dao.DAOException;
-import com.escalade.model.User;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -10,11 +13,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
+import com.escalade.dao.DAOException;
+import com.escalade.model.User;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = connection.prepareStatement(query, new String[] {"id"});
                 
                 ps.setString(1, firstName);
                 ps.setString(2, lastName);
