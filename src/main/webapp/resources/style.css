@@ -64,6 +64,14 @@ li a:active {
 	color: black;
 }
 
+.navbar-toggler:focus {
+	box-shadow: none;
+}
+
+.navbar-toggler:active {
+	background-color: #bbbbbb !important;
+}
+
 .button:disabled {
 	background-color: #bbbbbb;
 	color: #eeeeee;
